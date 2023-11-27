@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Model</title>
+</head>
+<body>
+<h1>Edit Model</h1>
+<form th:action="@{/model/change/{id}(id=${modelDto.getId()})}" method="post" th:object="${modelDto}">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:field="*{name}" required>
+    <label for="category">Category:</label>
+    <select id="category" name="category" th:field="*{category}" required>
+        <option value="Car">Car</option>
+        <option value="Buss">Buss</option>
+        <option value="Truck">Truck</option>
+        <option value="Motorcycle">Motorcycle</option>
+    </select>
+    <label for="startYear">Start Year:</label>
+    <input type="text" id="startYear" name="startYear" th:field="*{startYear}" required>
+    <label for="endYear">End Year:</label>
+    <input type="text" id="endYear" name="endYear" th:field="*{endYear}" required>
+    <input type="text" id="brand" name="brand" th:field="*{brand}" required>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

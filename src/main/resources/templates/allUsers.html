@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+</head>
+<body>
+<h1>All Users</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Active</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getRole()}"></td>
+        <td th:text="${user.isActive() ? 'Yes' : 'No'}"></td>
+
+        <td>
+            <form th:action="@{/user/find/{id}(id=${user.getId()})}" method="get">
+                <button type="submit">Watch</button>
+            </form>
+            <form th:action="@{/user/change/{id}(id=${user.getId()})}" method="get">
+                <button type="submit">Change</button>
+            </form>
+            <form th:action="@{/user/delete/{id}(id=${user.getId()})}" method="post">
+                <button type="submit">Deactivation</button>
+            </form>
+            <form th:action="@{/user/activation/{id}(id=${user.getId()})}" method="post">
+                <button type="submit">Activation</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/user/create}" method="get">
+    <button type="submit">Create new User</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Brands</title>
+</head>
+<body>
+<h1>All Brands</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="brand : ${brands}">
+        <td th:text="${brand.getName()}"></td>
+        <td>
+            <form th:action="@{/brand/find/{id}(id=${brand.getId()})}" method="get">
+                <button type="submit">Watch</button>
+            </form>
+            <form th:action="@{/brand/change/{id}(id=${brand.getId()})}" method="get">
+                <button type="submit">Change</button>
+            </form>
+            <form th:action="@{/brand/delete/{id}(id=${brand.getId()})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/brand/create}" method="get">
+    <button type="submit">Create new Brand</button>
+</form>
+</body>
+</html>

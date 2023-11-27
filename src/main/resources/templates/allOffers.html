@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Offers</title>
+</head>
+<body>
+<h1>All Offers</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Engine</th>
+        <th>Image URL</th>
+        <th>Mileage</th>
+        <th>Price</th>
+        <th>Transmission</th>
+        <th>Year</th>
+        <th>Username</th>
+        <th>Model Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="offer : ${offers}">
+        <td th:text="${offer.description}"></td>
+        <td th:text="${offer.engine}"></td>
+        <td th:text="${offer.imageUrl}"></td>
+        <td th:text="${offer.mileage}"></td>
+        <td th:text="${offer.price}"></td>
+        <td th:text="${offer.transmission}"></td>
+        <td th:text="${offer.year}"></td>
+        <td th:text="${offer.username}"></td>
+        <td th:text="${offer.modelName}"></td>
+        <td>
+            <form th:action="@{/offer/find/{id}(id=${offer.getId()})}" method="get">
+                <button type="submit">Watch</button>
+            </form>
+            <form th:action="@{/offer/change/{id}(id=${offer.getId()})}" method="get">
+                <button type="submit">Change</button>
+            </form>
+            <form th:action="@{/offer/delete/{id}(id=${offer.getId()})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/offer/create}" method="get">
+    <button type="submit">Create new Offer</button>
+</form>
+</body>
+</html>
