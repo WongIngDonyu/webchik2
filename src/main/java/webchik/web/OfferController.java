@@ -1,11 +1,18 @@
 package webchik.web;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import webchik.models.Offer;
+import webchik.services.ModelService;
 import webchik.services.OfferService;
+import webchik.services.UserService;
+import webchik.services.dtos.AddModelDto;
+import webchik.services.dtos.AddOfferDto;
 import webchik.services.dtos.OfferDto;
 
 import java.util.List;
@@ -16,9 +23,19 @@ import java.util.UUID;
 @RequestMapping("/offer")
 public class OfferController {
     private OfferService offerService;
+    private UserService userService;
+    private ModelService modelService;
     @Autowired
     public void setOfferService(OfferService offerService) {
         this.offerService = offerService;
+    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+    @Autowired
+    public void setModelService(ModelService modelService) {
+        this.modelService = modelService;
     }
 
     @GetMapping("/all")
@@ -49,13 +66,24 @@ public class OfferController {
 
     @GetMapping("/create")
     public String addNewOffer(Model model){
-        model.addAttribute("offerDto", new OfferDto());
+        model.addAttribute("allUsers", userService.allUsers());
+        model.addAttribute("allModels", modelService.allModels());
         return "addNewOffer";
     }
 
+    @ModelAttribute("addOfferDto")
+    public AddOfferDto initOffer(){
+        return new AddOfferDto();
+    }
+
     @PostMapping("/create")
-    public String addNewOffer(@ModelAttribute OfferDto offerDto){
-        offerService.add(offerDto);
+    public String addNewOffer(@Valid AddOfferDto addOfferDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("addOfferDto", addOfferDto);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferDto", bindingResult);
+            return "redirect:/offer/create";
+        }
+        offerService.add(addOfferDto);
         return "redirect:/offer/all";
     }
     @GetMapping("/change/{id}")

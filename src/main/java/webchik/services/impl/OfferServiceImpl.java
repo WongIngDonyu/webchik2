@@ -12,6 +12,7 @@ import webchik.repositories.UserRepository;
 import webchik.services.ModelService;
 import webchik.services.OfferService;
 import webchik.services.UserService;
+import webchik.services.dtos.AddOfferDto;
 import webchik.services.dtos.OfferDto;
 
 import java.time.LocalDateTime;
@@ -61,12 +62,12 @@ public class OfferServiceImpl implements OfferService<UUID> {
     }
 
     @Override
-    public OfferDto add(OfferDto offer) {
+    public AddOfferDto add(AddOfferDto offer) {
         Offer o = modelMapper.map(offer, Offer.class);
         o.setUser(userService.findByUsername(offer.getUsername()));
         o.setModel(modelService.findByName(offer.getModelName()));
         o.setCreated(LocalDateTime.now());
-        return modelMapper.map(offerRepository.saveAndFlush(o), OfferDto.class);
+        return modelMapper.map(offerRepository.saveAndFlush(o), AddOfferDto.class);
     }
 
     @Override

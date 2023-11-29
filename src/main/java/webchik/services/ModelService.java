@@ -5,6 +5,7 @@ package webchik.services;
 import webchik.models.Model;
 import webchik.services.dtos.AddModelDto;
 import webchik.services.dtos.ModelDto;
+import webchik.services.dtos.ShowModelInfoDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,8 @@ public interface ModelService <I extends UUID>{
     void delete(UUID id);
 
     List<ModelDto> getAll();
+    List<ShowModelInfoDto> allModels();
+
 
     Optional<ModelDto> findModel(UUID id);
 

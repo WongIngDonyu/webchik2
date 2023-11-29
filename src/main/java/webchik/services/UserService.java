@@ -4,6 +4,7 @@ package webchik.services;
 
 import webchik.models.User;
 import webchik.services.dtos.AddUserDto;
+import webchik.services.dtos.ShowUserInfoDto;
 import webchik.services.dtos.UserDto;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public interface UserService <I extends UUID>{
     void delete(UUID id);
 
     List<UserDto> getAll();
+    List<ShowUserInfoDto> allUsers();
 
     Optional<UserDto> findUser(UUID id);
 

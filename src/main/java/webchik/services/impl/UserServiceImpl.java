@@ -9,6 +9,7 @@ import webchik.repositories.UserRoleRepository;
 import webchik.services.UserRoleService;
 import webchik.services.UserService;
 import webchik.services.dtos.AddUserDto;
+import webchik.services.dtos.ShowUserInfoDto;
 import webchik.services.dtos.UserDto;
 
 import java.time.LocalDateTime;
@@ -49,6 +50,11 @@ public class UserServiceImpl implements UserService<UUID> {
     @Override
     public List<UserDto> getAll() {
         return userRepository.findAll().stream().map((m)->modelMapper.map(m, UserDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ShowUserInfoDto> allUsers() {
+        return userRepository.findAll().stream().map((m)->modelMapper.map(m, ShowUserInfoDto.class)).collect(Collectors.toList());
     }
 
     @Override

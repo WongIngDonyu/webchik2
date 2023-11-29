@@ -9,6 +9,7 @@ import webchik.repositories.ModelRepository;
 import webchik.services.ModelService;
 import webchik.services.dtos.AddModelDto;
 import webchik.services.dtos.ModelDto;
+import webchik.services.dtos.ShowModelInfoDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,6 +46,12 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     @Override
     public List<ModelDto> getAll() {
         return modelRepository.findAll().stream().map((m)->modelMapper.map(m, ModelDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ShowModelInfoDto> allModels() {
+        return modelRepository.findAll().stream().map((m)->modelMapper.map(m, ShowModelInfoDto.class)).collect(Collectors.toList());
+
     }
 
     @Override

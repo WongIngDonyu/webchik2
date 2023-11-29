@@ -1,6 +1,7 @@
 package webchik.services;
 
 
+import webchik.services.dtos.AddOfferDto;
 import webchik.services.dtos.OfferDto;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface OfferService <I extends UUID>{
 
     Optional<OfferDto> findOffer(UUID id);
 
-    OfferDto add(OfferDto offer);
+    AddOfferDto add(AddOfferDto offer);
     OfferDto update(OfferDto offerDto);
 }
