@@ -23,8 +23,7 @@ public class OfferController {
 
     @GetMapping("/all")
     public String viewAllOffers(Model model){
-        List<OfferDto> offers = offerService.getAll();
-        model.addAttribute("offers", offers);
+        model.addAttribute("offers", offerService.getAll());
         return "allOffers";
     }
 

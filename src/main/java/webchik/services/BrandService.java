@@ -5,6 +5,7 @@ package webchik.services;
 import webchik.models.Brand;
 import webchik.services.dtos.AddBrandDto;
 import webchik.services.dtos.BrandDto;
+import webchik.services.dtos.ShowBrandInfoDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ public interface BrandService <I extends UUID>{
     void delete(UUID id);
 
     List<BrandDto> getAll();
+    List<ShowBrandInfoDto> allBrands();
 
     Optional<BrandDto> findBrand(UUID id);
 

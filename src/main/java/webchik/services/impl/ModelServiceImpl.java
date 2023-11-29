@@ -7,6 +7,7 @@ import webchik.models.Model;
 import webchik.repositories.BrandRepository;
 import webchik.repositories.ModelRepository;
 import webchik.services.ModelService;
+import webchik.services.dtos.AddModelDto;
 import webchik.services.dtos.ModelDto;
 
 import java.time.LocalDateTime;
@@ -52,11 +53,11 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     }
 
     @Override
-    public ModelDto add(ModelDto model) {
+    public AddModelDto add(AddModelDto model) {
         Model m = modelMapper.map(model, Model.class);
         m.setBrand(brandService.findBrandByName(model.getBrandName()));
         m.setCreated(LocalDateTime.now());
-        return modelMapper.map(modelRepository.saveAndFlush(m), ModelDto.class);
+        return modelMapper.map(modelRepository.saveAndFlush(m), AddModelDto.class);
     }
 
     @Override

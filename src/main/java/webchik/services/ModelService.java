@@ -3,6 +3,7 @@ package webchik.services;
 
 
 import webchik.models.Model;
+import webchik.services.dtos.AddModelDto;
 import webchik.services.dtos.ModelDto;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface ModelService <I extends UUID>{
 
     Optional<ModelDto> findModel(UUID id);
 
-    ModelDto add(ModelDto model);
+    AddModelDto add(AddModelDto model);
 
     ModelDto update(ModelDto modelDt);
     Model findByName(String name);

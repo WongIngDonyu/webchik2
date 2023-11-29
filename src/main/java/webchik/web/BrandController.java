@@ -63,13 +63,9 @@ public class BrandController {
     @PostMapping("/create")
     public String addNewBrand(@Valid AddBrandDto addBrandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(error -> {
-                System.out.println(error);
-            });
             redirectAttributes.addFlashAttribute("addBrandDto", addBrandDto);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto",
-                    bindingResult);
-            return "redirect:/brand/create"; // Change the redirect URL if needed
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
+            return "redirect:/brand/create";
         }
 
         brandService.add(addBrandDto);

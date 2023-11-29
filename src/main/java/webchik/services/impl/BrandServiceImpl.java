@@ -8,6 +8,7 @@ import webchik.repositories.BrandRepository;
 import webchik.services.BrandService;
 import webchik.services.dtos.AddBrandDto;
 import webchik.services.dtos.BrandDto;
+import webchik.services.dtos.ShowBrandInfoDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,6 +40,12 @@ public class BrandServiceImpl implements BrandService<UUID> {
     @Override
     public List<BrandDto> getAll() {
         return brandRepository.findAll().stream().map((b) -> modelMapper.map(b, BrandDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ShowBrandInfoDto> allBrands() {
+        return brandRepository.findAll().stream().map((b) -> modelMapper.map(b, ShowBrandInfoDto.class)).collect(Collectors.toList());
+
     }
 
     @Override
