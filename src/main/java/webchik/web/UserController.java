@@ -1,11 +1,16 @@
 package webchik.web;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import webchik.models.User;
+import webchik.services.UserRoleService;
 import webchik.services.UserService;
+import webchik.services.dtos.AddUserDto;
 import webchik.services.dtos.UserDto;
 
 import java.util.List;
@@ -16,9 +21,14 @@ import java.util.UUID;
 public class UserController {
 
     private UserService userService;
+    private UserRoleService userRoleService;
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+    @Autowired
+    public void setUserRoleService(UserRoleService userRoleService) {
+        this.userRoleService = userRoleService;
     }
     @GetMapping("/all")
     public String viewAllUsers(Model model){
@@ -54,13 +64,22 @@ public class UserController {
 
     @GetMapping("/create")
     public String addNewUser(Model model){
-        model.addAttribute("userDto",new UserDto());
         return "addNewUser";
     }
 
+    @ModelAttribute("addUserDto")
+    public AddUserDto initUser(){
+        return new AddUserDto();
+    }
+
     @PostMapping("/create")
-    public String addNewUser(@ModelAttribute("userDto") UserDto userDto){
-        userService.add(userDto);
+    public String addNewUser(@Valid AddUserDto addUserDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("addUserDto", addUserDto);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addUserDto", bindingResult);
+            return "redirect:/user/create";
+        }
+        userService.add(addUserDto);
         return "redirect:/user/all";
     }
     @GetMapping("/change/{id}")
