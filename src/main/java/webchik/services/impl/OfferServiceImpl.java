@@ -2,6 +2,8 @@ package webchik.services.impl;
 
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import webchik.models.Model;
 import webchik.models.Offer;
@@ -23,6 +25,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@EnableCaching
+
 public class OfferServiceImpl implements OfferService<UUID> {
     private final OfferRepository offerRepository;
     private final ModelMapper modelMapper;
@@ -51,6 +55,7 @@ public class OfferServiceImpl implements OfferService<UUID> {
     }
 
     @Override
+    @Cacheable("offers")
     public List<OfferDto> getAll() {
         return offerRepository.findAll().stream().map((m)->modelMapper.map(m, OfferDto.class)).collect(Collectors.toList());
 

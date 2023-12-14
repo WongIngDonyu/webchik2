@@ -16,6 +16,7 @@ import webchik.services.BrandService;
 import webchik.services.dtos.AddBrandDto;
 import webchik.services.dtos.BrandDto;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,8 +32,8 @@ public class BrandController {
     }
 
     @GetMapping("/all")
-    public String viewAllBrands(Model model){
-        LOG.log(Level.INFO, "Show all Brands for someone");
+    public String viewAllBrands(Model model, Principal principal){
+        LOG.log(Level.INFO, "Show all Brands for " + principal.getName());
         List<BrandDto> brands = brandService.getAll();
         model.addAttribute("brands", brands);
         return "allBrands";

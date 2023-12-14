@@ -1,6 +1,8 @@
 package webchik.services.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import webchik.models.Brand;
 import webchik.models.Model;
@@ -19,6 +21,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@EnableCaching
+
 public class ModelServiceImpl  implements ModelService<UUID> {
     private final ModelMapper modelMapper;
     private final ModelRepository modelRepository;
@@ -44,6 +48,7 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     }
 
     @Override
+    @Cacheable("models")
     public List<ModelDto> getAll() {
         return modelRepository.findAll().stream().map((m)->modelMapper.map(m, ModelDto.class)).collect(Collectors.toList());
     }

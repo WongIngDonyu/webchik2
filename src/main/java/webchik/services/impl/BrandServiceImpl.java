@@ -1,7 +1,10 @@
 package webchik.services.impl;
 
 
+import jdk.jfr.Enabled;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import webchik.models.Brand;
 import webchik.repositories.BrandRepository;
@@ -18,6 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@EnableCaching
 public class BrandServiceImpl implements BrandService<UUID> {
     private final ModelMapper modelMapper;
     private final BrandRepository brandRepository;
@@ -38,6 +42,7 @@ public class BrandServiceImpl implements BrandService<UUID> {
     }
 
     @Override
+    @Cacheable("brands")
     public List<BrandDto> getAll() {
         return brandRepository.findAll().stream().map((b) -> modelMapper.map(b, BrandDto.class)).collect(Collectors.toList());
     }

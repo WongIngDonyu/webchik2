@@ -2,6 +2,8 @@ package webchik.services.impl;
 
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import webchik.models.User;
 import webchik.repositories.UserRepository;
@@ -20,6 +22,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@EnableCaching
+
 public class UserServiceImpl implements UserService<UUID> {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
@@ -48,6 +52,8 @@ public class UserServiceImpl implements UserService<UUID> {
     }
 
     @Override
+    @Cacheable("users")
+
     public List<UserDto> getAll() {
         return userRepository.findAll().stream().map((m)->modelMapper.map(m, UserDto.class)).collect(Collectors.toList());
     }
