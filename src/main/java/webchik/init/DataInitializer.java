@@ -1,12 +1,18 @@
 package webchik.init;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import webchik.models.User;
 import webchik.models.UserRole;
+import webchik.repositories.UserRepository;
+import webchik.repositories.UserRoleRepository;
 import webchik.services.*;
-import webchik.services.dtos.UserRoleDto;
 
 import java.io.IOException;
+import java.util.List;
+
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -19,13 +25,22 @@ public class DataInitializer implements CommandLineRunner {
     private final UserService userService;
 
     private final OfferService offerService;
+    private final UserRepository userRepository;
 
-    public DataInitializer(BrandService brandService, ModelService modelService, UserRoleService userRoleService, UserService userService, OfferService offerService) {
+    private final UserRoleRepository userRoleRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    private final String defaultPassword;
+    public DataInitializer(BrandService brandService, ModelService modelService, UserRoleService userRoleService, UserService userService, OfferService offerService, UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,@Value("aaaaa") String defaultPassword) {
         this.brandService = brandService;
         this.modelService = modelService;
         this.userRoleService = userRoleService;
         this.userService = userService;
         this.offerService = offerService;
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.defaultPassword = defaultPassword;
     }
 
     @Override
@@ -34,10 +49,21 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void seedData() throws IOException {
-        UserRoleDto admin = new UserRoleDto(null, UserRole.Role.Admin);
-        UserRoleDto user = new UserRoleDto(null, UserRole.Role.User);
-        userRoleService.add(admin);
-        userRoleService.add(user);
+        if (userRoleRepository.count() == 0) {
+            var adminRole = new UserRole(null,UserRole.Role.ADMIN);
+            var normalUserRole = new UserRole(null,UserRole.Role.USER);
+            userRoleRepository.save(adminRole);
+            userRoleRepository.save(normalUserRole);
+        }
+        var userRole = userRoleRepository.
+                findByRole(UserRole.Role.USER).orElseThrow();
+        var user = new User("user", passwordEncoder.encode(defaultPassword), "User","User",true,"User",null,null);
+       user.setUserRoles(List.of(userRole));
+       userRepository.save(user);
+        // UserRoleDto admin = new UserRoleDto(null, UserRole.Role.Admin);
+       // UserRoleDto user = new UserRoleDto(null, UserRole.Role.User);
+       // userRoleService.add(admin);
+        //userRoleService.add(user);
         /*  BrandDto b1 = new BrandDto(null,"Zoo");
         BrandDto sb1 = brandService.add(b1);
         BrandDto b2 = new BrandDto(null,"ZOV");

@@ -2,6 +2,7 @@ package webchik.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,21 +14,24 @@ public class User extends BaseEntity{
     private String lastName;
     private boolean isActive;
     private String imageUrl;
-    private UserRole userRole;
+    private List<UserRole> userRoles;
 
     private List<Offer> offers;
-    public User(){}
+    public User(){this.userRoles=new ArrayList<>();}
 
-    public User(String username, String password, String firstName, String lastName, boolean isActive, String imageUrl, UserRole userRole, List<Offer> offers) {
+    public User(String username, String password, String firstName, String lastName, boolean isActive, String imageUrl, List<UserRole> userRoles, List<Offer> offers) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = isActive;
         this.imageUrl = imageUrl;
-        this.userRole = userRole;
+        this.userRoles = userRoles;
         this.offers = offers;
     }
+
+  
+
     @Column(name = "username", unique = true)
     public String getUsername() {
         return username;
@@ -76,15 +80,15 @@ public class User extends BaseEntity{
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    public UserRole getUserRole() {
-        return userRole;
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     public List<Offer> getOffers() {
         return offers;

@@ -9,13 +9,12 @@ import java.util.UUID;
 @Table(name = "roles")
 public class UserRole extends BasedEnity{
     private Role role;
-    private List<User> users;
+
     public UserRole(){}
 
-    public UserRole(UUID id, Role role, List<User> users) {
+    public UserRole(UUID id, Role role) {
         this.id = id;
         this.role = role;
-        this.users = users;
     }
     @Column(name = "role")
     public Role getRole() {
@@ -26,16 +25,10 @@ public class UserRole extends BasedEnity{
         this.role = role;
     }
 
-    @OneToMany(mappedBy = "userRole", fetch = FetchType.LAZY)
-    public List<User> getUsers() {
-        return users;
-    }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+
     public enum Role {
-        User(0), Admin(1);
+        USER(0), ADMIN(1);
         private int number;
         Role(int number) {
             this.number=number;
