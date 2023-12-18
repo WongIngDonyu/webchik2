@@ -34,8 +34,7 @@ public class BrandController {
     @GetMapping("/all")
     public String viewAllBrands(Model model, Principal principal){
         LOG.log(Level.INFO, "Show all Brands for " + principal.getName());
-        List<BrandDto> brands = brandService.getAll();
-        model.addAttribute("brands", brands);
+        model.addAttribute("brands", brandService.getAll());
         return "allBrands";
     }
 

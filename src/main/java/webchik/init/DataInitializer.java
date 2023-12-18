@@ -57,7 +57,7 @@ public class DataInitializer implements CommandLineRunner {
         }
         var userRole = userRoleRepository.
                 findByRole(UserRole.Role.USER).orElseThrow();
-        var user = new User("user", passwordEncoder.encode(defaultPassword), "User","User",true,"User",null,null);
+        var user = new User("Ameruk", passwordEncoder.encode(defaultPassword), "User","User",true,"User",null,null);
        user.setUserRoles(List.of(userRole));
        userRepository.save(user);
         // UserRoleDto admin = new UserRoleDto(null, UserRole.Role.Admin);

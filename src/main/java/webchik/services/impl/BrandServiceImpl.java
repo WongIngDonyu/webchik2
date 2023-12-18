@@ -32,6 +32,12 @@ public class BrandServiceImpl implements BrandService<UUID> {
     }
 
     @Override
+    @Cacheable("brands")
+    public List<BrandDto> getAll() {
+        return brandRepository.findAll().stream().map((b) -> modelMapper.map(b, BrandDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public void delete(BrandDto brand) {
         brandRepository.deleteById(brand.getId());
     }
@@ -39,12 +45,6 @@ public class BrandServiceImpl implements BrandService<UUID> {
     @Override
     public void delete(UUID id) {
         brandRepository.deleteById(id);
-    }
-
-    @Override
-    @Cacheable("brands")
-    public List<BrandDto> getAll() {
-        return brandRepository.findAll().stream().map((b) -> modelMapper.map(b, BrandDto.class)).collect(Collectors.toList());
     }
 
     @Override
