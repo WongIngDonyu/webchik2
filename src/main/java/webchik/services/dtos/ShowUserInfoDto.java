@@ -2,6 +2,9 @@ package webchik.services.dtos;
 
 import webchik.models.UserRole;
 
+import java.util.List;
+import java.util.UUID;
+
 public class ShowUserInfoDto {
     private String username;
 
@@ -14,7 +17,8 @@ public class ShowUserInfoDto {
 
     private String imageUrl;
 
-    private UserRole.Role role;
+    private List<UserRole> userRoles;
+    private UUID id;
 
     public String getUsername() {
         return username;
@@ -64,11 +68,19 @@ public class ShowUserInfoDto {
         this.imageUrl = imageUrl;
     }
 
-    public UserRole.Role getRole() {
-        return role;
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setRole(UserRole.Role role) {
-        this.role = role;
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

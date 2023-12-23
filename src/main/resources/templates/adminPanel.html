@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">Navbar</div>
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-3">
+                <h1>All Offers</h1>
+                <table class="table table-striped mt-5">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Description</th>
+                        <th>Engine</th>
+                        <th>Mileage</th>
+                        <th>Price</th>
+                        <th>Transmission</th>
+                        <th>Year</th>
+                        <th>Model Name</th>
+                        <th>Username</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="offer : ${offers}">
+                        <td><img src="/images/tesla.jpg" alt="Static Image" style="max-width: 300px; max-height: 300px;"></td>
+                        <td th:text="${offer.description}"></td>
+                        <td th:text="${offer.engine}"></td>
+                        <td th:text="${offer.mileage}"></td>
+                        <td th:text="${offer.price}"></td>
+                        <td th:text="${offer.transmission}"></td>
+                        <td th:text="${offer.year}"></td>
+                        <td th:text="${offer.modelName}"></td>
+                        <td th:text="${offer.username}"></td>
+                        <td>
+                            <form th:action="@{/offer/change/{id}(id=${offer.getId()})}" method="get">
+                                <button type="submit">Change</button>
+                            </form>
+                            <form th:action="@{/offer/delete/{id}(id=${offer.getId()})}" method="post">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2>All Users</h2>
+                <table class="table table-striped mt-5">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Role</th>
+                        <th>Active</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.firstName}"></td>
+                        <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.getUserRoles().first.getRole()}"></td>
+                        <td th:text="${user.isActive() ? 'Yes' : 'No'}"></td>
+                        <td>
+                            <form th:action="@{/user/change/{id}(id=${user.getId()})}" method="get">
+                                <button type="submit">Change</button>
+                            </form>
+                            <form th:action="@{/user/deActivation/{username}(username=${user.getId()})}" method="post">
+                                <button type="submit">Deactivation</button>
+                            </form>
+                            <form th:action="@{/user/activation/{username}(username=${user.getId()})}" method="post">
+                                <button type="submit">Activation</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2>All Models</h2>
+                <table class="table table-striped mt-5">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>StartYear</th>
+                        <th>EndYear</th>
+                        <th>Brand</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="model : ${models}">
+                        <td th:text="${model.name}"></td>
+                        <td th:text="${model.category}"></td>
+                        <td th:text="${model.startYear}"></td>
+                        <td th:text="${model.endYear}"></td>
+                        <td th:text="${model.getBrandName()}"></td>
+                        <td>
+                            <form th:action="@{/model/change/{id}(id=${model.getId()})}" method="get">
+                                <button type="submit">Change</button>
+                            </form>
+                            <form th:action="@{/model/delete/{id}(id=${model.getId()})}" method="post">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2>All Brands</h2>
+                <table class="table table-striped mt-5">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="brand : ${brands}">
+                        <td th:text="${brand.name}"></td>
+                        <td>
+                            <form th:action="@{/brand/change/{id}(id=${brand.getId()})}" method="get">
+                                <button type="submit">Change</button>
+                            </form>
+                            <form th:action="@{/brand/delete/{id}(id=${brand.getId()})}" method="post">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p><a th:href="@{/}">Back to Main page</a></p>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
+
+

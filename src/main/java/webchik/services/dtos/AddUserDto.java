@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import webchik.models.UserRole;
 import webchik.validation.UniqueUserName;
 
+import java.util.List;
+
 public class AddUserDto {
     @UniqueUserName
     private String username;
@@ -18,7 +20,7 @@ public class AddUserDto {
 
     private String imageUrl;
 
-    private UserRole.Role role;
+    private List<UserRole> userRoles;
     @NotEmpty(message = "Username must not be empty!")
     @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters!")
     public String getUsername() {
@@ -62,10 +64,11 @@ public class AddUserDto {
         this.imageUrl = imageUrl;
     }
     @NotNull(message = "User role must not be empty!")
-    public UserRole.Role getRole() {
-        return role;
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
-    public void setRole(UserRole.Role role) {
-        this.role = role;
+
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 }

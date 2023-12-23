@@ -11,7 +11,7 @@
                 <div class="justify-content-center">
                     <h1>Add Offer</h1>
                 </div>
-                <form th:action="@{/offer/create}" th:method="post" th:object="${addOfferDto}" class="m-md-auto w-50 pb-3">
+                <form th:action="@{'/offer/change/' + ${offer.id}}" th:method="post" th:object="${offer}" class="m-md-auto w-50 pb-3">
                     <div class="mb-3">
                         <label class="form-label" for="description">Description:</label>
                         <input th:field="*{description}" th:errorclass="is-invalid"

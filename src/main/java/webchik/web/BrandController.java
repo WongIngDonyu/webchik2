@@ -15,6 +15,8 @@ import webchik.models.Brand;
 import webchik.services.BrandService;
 import webchik.services.dtos.AddBrandDto;
 import webchik.services.dtos.BrandDto;
+import webchik.services.dtos.ShowBrandInfoDto;
+import webchik.services.dtos.ShowUserInfoDto;
 
 import java.security.Principal;
 import java.util.List;
@@ -52,7 +54,7 @@ public class BrandController {
     @PostMapping("/delete/{id}")
     public String deleteBrand(@PathVariable("id") UUID uuid){
         brandService.delete(uuid);
-        return "redirect:/brand/all";
+        return "redirect:/admin/panel";
     }
 
     @GetMapping("/create")
@@ -74,29 +76,19 @@ public class BrandController {
         }
 
         brandService.add(addBrandDto);
-        return "redirect:/brand/all";
+        return "redirect:/admin/panel";
     }
 
 
     @GetMapping("/change/{id}")
     public String changeBrand(Model model, @PathVariable("id") UUID uuid){
-        Optional<BrandDto> dbBrand = brandService.findBrand(uuid);
-        if (dbBrand.isPresent()) {
-            BrandDto brand = dbBrand.get();
-            model.addAttribute("brandDto", brand);
-            return "editBrand";
-        } else {
-            return "brandNotFound";
-        }
+        Optional<ShowBrandInfoDto> dbBrand = brandService.findBrand(uuid);
+        dbBrand.ifPresent(brand -> model.addAttribute("brand", brand));
+            return "addNewBrand2";
     }
     @PostMapping("/change/{id}")
-    public String saveChangeBrand(@PathVariable("id") UUID uuid, @ModelAttribute("brandDto") BrandDto brandDto) {
-        Optional<Brand> dbBrand = brandService.findBrand(uuid);
-        if (dbBrand.isPresent()) {
-            brandService.update(brandDto);
-            return "redirect:/brand/all";
-        } else {
-            return "brandNotFound";
-        }
+    public String saveChangeBrand(@PathVariable("id") UUID uuid, @ModelAttribute  ShowBrandInfoDto brandDto) {
+        brandService.update(brandDto);
+        return "redirect:/admin/panel";
     }
 }

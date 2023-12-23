@@ -48,9 +48,9 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     }
 
     @Override
-    @Cacheable("models")
-    public List<ModelDto> getAll() {
-        return modelRepository.findAll().stream().map((m)->modelMapper.map(m, ModelDto.class)).collect(Collectors.toList());
+    //@Cacheable("models")
+    public List<ShowModelInfoDto> getAll() {
+        return modelRepository.findAll().stream().map((m)->modelMapper.map(m, ShowModelInfoDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -60,8 +60,8 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     }
 
     @Override
-    public Optional<ModelDto> findModel(UUID id) {
-        return Optional.ofNullable(modelMapper.map(modelRepository.findById(id), ModelDto.class));
+    public Optional<ShowModelInfoDto> findModel(UUID id) {
+        return Optional.ofNullable(modelMapper.map(modelRepository.findById(id), ShowModelInfoDto.class));
     }
 
     @Override
@@ -73,21 +73,18 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     }
 
     @Override
-    public ModelDto update(ModelDto modelDto) {
+    public ShowModelInfoDto update(ShowModelInfoDto modelDto) {
         Optional<Model> dbModel = modelRepository.findById(modelDto.getId());
         if (dbModel.isEmpty()) {
             throw new NoSuchElementException("Model not found");
         }
-            Model model = dbModel.get();
-            modelMapper.map(modelDto, model);
-            Optional<Brand> dbBrand = brandRepository.findByName(modelDto.getBrandName());
-            if (dbBrand.isEmpty()){
-                throw new NoSuchElementException("Brand not found");
-            }
-            model.setBrand(brandService.findBrandByName(modelDto.getBrandName()));
-            model.setModified(LocalDateTime.now());
-            model.setCreated(dbModel.get().getCreated());
-            return modelMapper.map(modelRepository.saveAndFlush(model), ModelDto.class);
+        Model model = modelMapper.map(modelDto, Model.class);
+        Optional<Brand> dbBrand = brandRepository.findByName(modelDto.getBrandName());
+        if (dbBrand.isEmpty()){
+            throw new NoSuchElementException("Brand not found");
+        }
+        model.setBrand(brandService.findBrandByName(modelDto.getBrandName()));
+            return modelMapper.map(modelRepository.saveAndFlush(model), ShowModelInfoDto.class);
         }
 
     @Override

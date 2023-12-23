@@ -16,6 +16,7 @@ import webchik.services.OfferService;
 import webchik.services.UserService;
 import webchik.services.dtos.AddOfferDto;
 import webchik.services.dtos.OfferDto;
+import webchik.services.dtos.ShowOfferInfoDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,34 +56,33 @@ public class OfferServiceImpl implements OfferService<UUID> {
     }
 
     @Override
-    @Cacheable("offers")
-    public List<OfferDto> getAll() {
-        return offerRepository.findAll().stream().map((m)->modelMapper.map(m, OfferDto.class)).collect(Collectors.toList());
+    //@Cacheable("offers")
+    public List<ShowOfferInfoDto> getAll() {
+        return offerRepository.findAll().stream().map((m)->modelMapper.map(m, ShowOfferInfoDto.class)).collect(Collectors.toList());
 
     }
 
     @Override
-    public Optional<OfferDto> findOffer(UUID id) {
-        return Optional.ofNullable(modelMapper.map(offerRepository.findById(id), OfferDto.class));
+    public Optional<ShowOfferInfoDto> findOffer(UUID id) {
+        return Optional.ofNullable(modelMapper.map(offerRepository.findById(id), ShowOfferInfoDto.class));
     }
 
     @Override
     public AddOfferDto add(AddOfferDto offer) {
         Offer o = modelMapper.map(offer, Offer.class);
-        o.setUser(userService.findByUsername(offer.getUsername()));
+        o.setUser(modelMapper.map(userService.findByUsername(offer.getUsername()), User.class));
         o.setModel(modelService.findByName(offer.getModelName()));
         o.setCreated(LocalDateTime.now());
         return modelMapper.map(offerRepository.saveAndFlush(o), AddOfferDto.class);
     }
 
     @Override
-    public  OfferDto update(OfferDto offerDto){
+    public  ShowOfferInfoDto update(ShowOfferInfoDto offerDto){
         Optional<Offer> dbOffer = offerRepository.findById(offerDto.getId());
         if (dbOffer.isEmpty()) {
             throw new NoSuchElementException("Offer not found");
         }
-            Offer offer = dbOffer.get();
-            modelMapper.map(offerDto, offer);
+            Offer offer = modelMapper.map(offerDto, Offer.class);
         Optional<User> dbUser = userRepository.findByUsername(offerDto.getUsername());
         if (dbUser.isEmpty()){
             throw new NoSuchElementException("User not found");
@@ -95,7 +95,7 @@ public class OfferServiceImpl implements OfferService<UUID> {
         offer.setModel(modelService.findByName(offerDto.getModelName()));
             offer.setModified(LocalDateTime.now());
             offer.setCreated(dbOffer.get().getCreated());
-            return modelMapper.map(offerRepository.saveAndFlush(offer), OfferDto.class);
+            return modelMapper.map(offerRepository.saveAndFlush(offer), ShowOfferInfoDto.class);
 
     }
 }

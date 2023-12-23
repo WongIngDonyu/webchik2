@@ -15,14 +15,15 @@ public interface UserService <I extends UUID>{
     void delete(UserDto user);
 
     void delete(UUID id);
+    void deActivation(UUID uuid);
 
-    List<UserDto> getAll();
+    List<ShowUserInfoDto> getAll();
     List<ShowUserInfoDto> allUsers();
 
-    Optional<UserDto> findUser(UUID id);
+    Optional<ShowUserInfoDto> findUser(UUID id);
 
     AddUserDto add(AddUserDto user);
-    UserDto update(UserDto user);
+    ShowUserInfoDto update(ShowUserInfoDto user);
     User findByUsername (String username);
-    void activation(UUID id);
+    void activation(UUID uuid);
 }

@@ -8,12 +8,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import webchik.models.Offer;
+import webchik.models.User;
 import webchik.services.ModelService;
 import webchik.services.OfferService;
 import webchik.services.UserService;
-import webchik.services.dtos.AddModelDto;
-import webchik.services.dtos.AddOfferDto;
-import webchik.services.dtos.OfferDto;
+import webchik.services.dtos.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +42,14 @@ public class OfferController {
         model.addAttribute("offers", offerService.getAll());
         return "allOffers";
     }
+    @GetMapping("/find2/{id}")
+    public String viewAllOffers2(Model model, @PathVariable("id") UUID uuid){
+        Optional<ShowOfferInfoDto> offerOptional = offerService.findOffer(uuid);
+        offerOptional.ifPresent(offer -> model.addAttribute("offer", offer));
+        model.addAttribute("user", userService.findByUsername(offerOptional.get().getUsername()));
+        model.addAttribute("model", modelService.findByName(offerOptional.get().getModelName()));
+        return "allOffers2";
+    }
 
     @GetMapping("/find/{id}")
     public String findOffer(Model model, @PathVariable("id") UUID uuid){
@@ -61,7 +68,7 @@ public class OfferController {
     @PostMapping("/delete/{id}")
     public String deleteOffer(@PathVariable("id") UUID uuid){
         offerService.delete(uuid);
-        return "redirect:/offer/all";
+        return "redirect:/admin/panel";
     }
 
     @GetMapping("/create")
@@ -84,27 +91,20 @@ public class OfferController {
             return "redirect:/offer/create";
         }
         offerService.add(addOfferDto);
-        return "redirect:/offer/all";
+        return "redirect:/admin/panel";
     }
     @GetMapping("/change/{id}")
     public String changeOffer(Model model, @PathVariable("id") UUID uuid){
-        Optional<OfferDto> dbOffer = offerService.findOffer(uuid);
-        if (dbOffer.isPresent()) {
-            OfferDto offerDto = dbOffer.get();
-            model.addAttribute("offerDto", offerDto);
-            return "editOffer";
-        } else {
-            return "offerNotFound";
+        Optional<ShowOfferInfoDto> dbOffer = offerService.findOffer(uuid);
+        dbOffer.ifPresent(offer -> model.addAttribute("offer", offer));
+        model.addAttribute("allUsers", userService.allUsers());
+        model.addAttribute("allModels", modelService.allModels());
+            return "addNewOffer2";
         }
-    }
     @PostMapping("/change/{id}")
-    public String saveChangeOffer(@PathVariable("id") UUID uuid, @ModelAttribute OfferDto offerDto) {
-        Optional<Offer> dbOffer = offerService.findOffer(uuid);
-        if (dbOffer.isPresent()) {
+    public String saveChangeOffer(@PathVariable("id") UUID uuid, @ModelAttribute  ShowOfferInfoDto offerDto) {
             offerService.update(offerDto);
-            return "redirect:/offer/all";
-        } else {
-            return "offerNotFound";
-        }
+            return "redirect:/admin/panel";
+
     }
 }

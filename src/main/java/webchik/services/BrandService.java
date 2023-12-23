@@ -16,12 +16,12 @@ public interface BrandService <I extends UUID>{
 
     void delete(UUID id);
 
-    List<BrandDto> getAll();
+    List<ShowBrandInfoDto> getAll();
     List<ShowBrandInfoDto> allBrands();
 
-    Optional<BrandDto> findBrand(UUID id);
+    Optional<ShowBrandInfoDto> findBrand(UUID id);
 
     AddBrandDto add(AddBrandDto brand);
-    BrandDto update(BrandDto brand);
+    ShowBrandInfoDto update(ShowBrandInfoDto brand);
     Brand findBrandByName(String brandName);
 }

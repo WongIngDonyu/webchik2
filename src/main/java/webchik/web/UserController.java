@@ -11,6 +11,8 @@ import webchik.models.User;
 import webchik.services.UserRoleService;
 import webchik.services.UserService;
 import webchik.services.dtos.AddUserDto;
+import webchik.services.dtos.ShowOfferInfoDto;
+import webchik.services.dtos.ShowUserInfoDto;
 import webchik.services.dtos.UserDto;
 
 import java.util.List;
@@ -32,7 +34,7 @@ public class UserController {
     }
     @GetMapping("/all")
     public String viewAllUsers(Model model){
-        List<UserDto> users = userService.getAll();
+        List<ShowUserInfoDto> users = userService.getAll();
         model.addAttribute("users", users);
         return "allUsers";
     }
@@ -50,20 +52,21 @@ public class UserController {
         }
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") UUID uuid){
-        userService.delete(uuid);
-        return "redirect:/user/all";
+    @PostMapping("/deActivation/{id}")
+    public String deleteUser(@PathVariable("id") UUID id){
+        userService.deActivation(id);
+        return "redirect:/admin/panel";
     }
 
     @PostMapping("/activation/{id}")
-    public String activationUser(@PathVariable("id") UUID uuid){
-        userService.activation(uuid);
-        return "redirect:/user/all";
+    public String activationUser(@PathVariable("id") UUID id){
+        userService.activation(id);
+        return "redirect:/admin/panel";
     }
 
     @GetMapping("/create")
     public String addNewUser(Model model){
+        model.addAttribute("roles", userRoleService.getAll());
         return "addNewUser";
     }
 
@@ -80,28 +83,19 @@ public class UserController {
             return "redirect:/user/create";
         }
         userService.add(addUserDto);
-        return "redirect:/user/all";
+        return "redirect:/admin/panel";
     }
     @GetMapping("/change/{id}")
-    public String changeUser(Model model, @PathVariable("id") UUID uuid){
-        Optional<UserDto> dbUser = userService.findUser(uuid);
-        if (dbUser.isPresent()) {
-            UserDto userDto = dbUser.get();
-            model.addAttribute("userDto", userDto);
-            return "editUser";
-        } else {
-            return "userNotFound";
-        }
+    public String changeUser(Model model, @PathVariable("id") UUID id){
+        Optional<ShowUserInfoDto> dbUser = userService.findUser(id);
+        dbUser.ifPresent(user -> model.addAttribute("user", user));
+        model.addAttribute("roles", userRoleService.getAll());
+        return "addNewUser2";
+
     }
     @PostMapping("/change/{id}")
-    public String saveChangeUser(@PathVariable("id") UUID uuid, @ModelAttribute UserDto userDto) {
-        Optional<User> dbUser = userService.findUser(uuid);
-        if (dbUser.isPresent()) {
-            userService.update(userDto);
-            return "redirect:/user/all";
-        } else {
-            return "userNotFound";
-        }
+    public String saveChangeUser(@PathVariable("id") UUID id, @ModelAttribute  ShowUserInfoDto user) {
+        userService.update(user);
+        return "redirect:/admin/panel";
     }
-
 }

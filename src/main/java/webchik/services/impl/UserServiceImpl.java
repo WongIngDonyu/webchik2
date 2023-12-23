@@ -2,7 +2,6 @@ package webchik.services.impl;
 
 
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import webchik.models.User;
@@ -52,10 +51,20 @@ public class UserServiceImpl implements UserService<UUID> {
     }
 
     @Override
-    @Cacheable("users")
+    public void deActivation(UUID uuid) {
+        Optional<User> optionalUser = userRepository.findById(uuid);;
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setActive(false);
+            userRepository.save(user);
+        }
+    }
 
-    public List<UserDto> getAll() {
-        return userRepository.findAll().stream().map((m)->modelMapper.map(m, UserDto.class)).collect(Collectors.toList());
+    @Override
+    //@Cacheable("users")
+
+    public List<ShowUserInfoDto> getAll() {
+        return userRepository.findAll().stream().map((m)->modelMapper.map(m, ShowUserInfoDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -64,30 +73,28 @@ public class UserServiceImpl implements UserService<UUID> {
     }
 
     @Override
-    public Optional<UserDto> findUser(UUID id) {
-        return Optional.ofNullable(modelMapper.map(userRepository.findById(id), UserDto.class));
+    public Optional<ShowUserInfoDto> findUser(UUID id) {
+        return Optional.ofNullable(modelMapper.map(userRepository.findById(id), ShowUserInfoDto.class));
     }
 
     @Override
     public AddUserDto add(AddUserDto user) {
         User u = modelMapper.map(user, User.class);
-       // u.setUserRole(userRoleService.findRoleByName(user.getRole()));
         u.setCreated(LocalDateTime.now());
         u.setActive(true);
         return modelMapper.map(userRepository.saveAndFlush(u), AddUserDto.class);
     }
 
     @Override
-    public UserDto update(UserDto userDto) {
+    public ShowUserInfoDto update(ShowUserInfoDto userDto) {
         Optional<User> dbUser = userRepository.findById(userDto.getId());
         if (dbUser.isEmpty()) {
             throw new NoSuchElementException("User not found");
         }
-            User user1 = dbUser.get();
-           // user1.setUserRole(userRoleService.findRoleByName(userDto.getRole()));
+            User user1 = modelMapper.map(userDto, User.class);
             user1.setModified(LocalDateTime.now());
             user1.setCreated(dbUser.get().getCreated());
-            return modelMapper.map(userRepository.saveAndFlush(user1), UserDto.class);
+            return modelMapper.map(userRepository.saveAndFlush(user1), ShowUserInfoDto.class);
         }
 
     @Override
@@ -96,8 +103,8 @@ public class UserServiceImpl implements UserService<UUID> {
     }
 
     @Override
-    public void activation(UUID id) {
-        Optional<User> optionalUser = userRepository.findById(id);
+    public void activation(UUID uuid) {
+        Optional<User> optionalUser = userRepository.findById(uuid);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setActive(true);

@@ -3,6 +3,7 @@ package webchik.services;
 
 import webchik.services.dtos.AddOfferDto;
 import webchik.services.dtos.OfferDto;
+import webchik.services.dtos.ShowOfferInfoDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +14,10 @@ public interface OfferService <I extends UUID>{
 
     void delete(UUID id);
 
-    List<OfferDto> getAll();
+    List<ShowOfferInfoDto> getAll();
 
-    Optional<OfferDto> findOffer(UUID id);
+    Optional<ShowOfferInfoDto> findOffer(UUID id);
 
     AddOfferDto add(AddOfferDto offer);
-    OfferDto update(OfferDto offerDto);
+    ShowOfferInfoDto update(ShowOfferInfoDto offerDto);
 }

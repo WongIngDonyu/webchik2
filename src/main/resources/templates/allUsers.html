@@ -21,16 +21,16 @@
         <td th:text="${user.isActive() ? 'Yes' : 'No'}"></td>
 
         <td>
-            <form th:action="@{/user/find/{id}(id=${user.getId()})}" method="get">
+            <form th:action="@{/user/find/{id}(id=${user.getUsername()})}" method="get">
                 <button type="submit">Watch</button>
             </form>
-            <form th:action="@{/user/change/{id}(id=${user.getId()})}" method="get">
+            <form th:action="@{/user/change/{id}(id=${user.getUsername()})}" method="get">
                 <button type="submit">Change</button>
             </form>
-            <form th:action="@{/user/delete/{id}(id=${user.getId()})}" method="post">
+            <form th:action="@{/user/delete/{id}(id=${user.getUsername()})}" method="post">
                 <button type="submit">Deactivation</button>
             </form>
-            <form th:action="@{/user/activation/{id}(id=${user.getId()})}" method="post">
+            <form th:action="@{/user/activation/{id}(id=${user.getUsername()})}" method="post">
                 <button type="submit">Activation</button>
             </form>
         </td>

@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import webchik.services.BrandService;
 import webchik.services.ModelService;
-import webchik.services.dtos.AddBrandDto;
-import webchik.services.dtos.AddModelDto;
-import webchik.services.dtos.ModelDto;
-import webchik.services.dtos.ShowBrandInfoDto;
+import webchik.services.dtos.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +52,7 @@ public class ModelController {
     @PostMapping("/delete/{id}")
     public String deleteModel(@PathVariable("id") UUID uuid){
         modelService.delete(uuid);
-        return "redirect:/model/all";
+        return "redirect:/admin/panel";
     }
 
     @GetMapping("/create")
@@ -77,27 +74,19 @@ public class ModelController {
             return "redirect:/model/create";
         }
         modelService.add(addModelDto);
-        return "redirect:/model/all";
+        return "redirect:/admin/panel";
     }
     @GetMapping("/change/{id}")
     public String changeModel(Model model, @PathVariable("id") UUID uuid){
-        Optional<ModelDto> dbModel = modelService.findModel(uuid);
-        if (dbModel.isPresent()) {
-            ModelDto modelDto = dbModel.get();
-            model.addAttribute("modelDto", modelDto);
-            return "editModel";
-        } else {
-            return "modelNotFound";
-        }
+        Optional<ShowModelInfoDto> dbModel = modelService.findModel(uuid);
+        dbModel.ifPresent(modelDto -> model.addAttribute("modelDto", modelDto));
+        model.addAttribute("allBrands", brandService.allBrands());
+        return "addNewModel2";
     }
+
     @PostMapping("/change/{id}")
-    public String saveChangeModel(@PathVariable("id") UUID uuid, @ModelAttribute ModelDto modelDto) {
-        Optional<Model> dbModel = modelService.findModel(uuid);
-        if (dbModel.isPresent()) {
-            modelService.update(modelDto);
-            return "redirect:/model/all";
-        } else {
-            return "modelNotFound";
-        }
+    public String saveChangeModel(@PathVariable("id") UUID uuid, @ModelAttribute  ShowModelInfoDto modelDto) {
+        modelService.update(modelDto);
+        return "redirect:/admin/panel";
     }
 }

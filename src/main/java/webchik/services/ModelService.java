@@ -16,14 +16,14 @@ public interface ModelService <I extends UUID>{
 
     void delete(UUID id);
 
-    List<ModelDto> getAll();
+    List<ShowModelInfoDto> getAll();
     List<ShowModelInfoDto> allModels();
 
 
-    Optional<ModelDto> findModel(UUID id);
+    Optional<ShowModelInfoDto> findModel(UUID id);
 
     AddModelDto add(AddModelDto model);
 
-    ModelDto update(ModelDto modelDt);
+    ShowModelInfoDto update(ShowModelInfoDto modelDto);
     Model findByName(String name);
 }

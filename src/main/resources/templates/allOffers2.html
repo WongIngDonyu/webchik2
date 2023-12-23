@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">Navbar</div>
+<main class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="jumbotron text-center rounded col-md-8 align-self-center pt-3">
+                <h1>Offer Information</h1>
+                <img src="/images/tesla.jpg" alt="Static Image" style="max-width: 300px; max-height: 300px;">
+                <p>Description: <span th:text="${offer.description}"></span></p>
+                <p>Engine: <span th:text="${offer.engine}"></span></p>
+                <p>Mileage: <span th:text="${offer.mileage}"></span></p>
+                <p>Price: <span th:text="${offer.price}"></span></p>
+                <p>Transmission: <span th:text="${offer.transmission}"></span></p>
+                <p>Year: <span th:text="${offer.year}"></span></p>
+
+                <h2>User Information</h2>
+                <p>Username: <span th:text="${user.username}"></span></p>
+                <p>FirstName: <span th:text="${user.firstName}"></span></p>
+                <p>LastName: <span th:text="${user.lastName}"></span></p>
+
+                <h2>Model Information</h2>
+                <p>Name: <span th:text="${model.name}"></span></p>
+                <p>Category: <span th:text="${model.category}"></span></p>
+                <p>StartYear: <span th:text="${model.startYear}"></span></p>
+                <p>EndYear: <span th:text="${model.endYear}"></span></p>
+                <p>Brand: <span th:text="${model.brand.name}"></span></p>
+                <p><a th:href="@{/}">Back to Offers</a></p>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
+

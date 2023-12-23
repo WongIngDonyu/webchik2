@@ -102,7 +102,7 @@ public class Offer extends BaseEntity{
         this.user = user;
     }
     public enum Engine {
-        GASOLINE(0), DIESEL(1), ELECTRIC(2), HYBRID(3);
+        Gasoline(0), Diesel(1), Electric(2), Hybrid(3);
         private int number;
         Engine(int number) {
             this.number=number;
@@ -112,7 +112,7 @@ public class Offer extends BaseEntity{
         }
     }
     public enum Transmission {
-        MANUAL(0), AUTOMATIC(1);
+        Manual(0), Automatic(1);
         private int number;
         Transmission(int number) {
             this.number=number;

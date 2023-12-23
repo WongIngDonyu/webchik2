@@ -2,6 +2,8 @@ package webchik.services.dtos;
 
 import webchik.models.Model;
 
+import java.util.UUID;
+
 public class ShowModelInfoDto {
     private String name;
     private Model.Category category;
@@ -9,6 +11,7 @@ public class ShowModelInfoDto {
     private int startYear;
     private int endYear;
     private String brandName;
+    private UUID id;
 
     public String getName() {
         return name;
@@ -56,5 +59,13 @@ public class ShowModelInfoDto {
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }
