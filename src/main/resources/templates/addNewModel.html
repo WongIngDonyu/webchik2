@@ -63,21 +63,21 @@
                     <div class="mb-3">
                         <label class="form-label" for="startYear">start Year:</label>
                         <input th:field="*{startYear}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="startYear" aria-describedby="startYearHelp"
+                               type="number" class="form-control text-center" id="startYear" aria-describedby="startYearHelp"
                                name="startYear"/>
                         <small th:if="${#fields.hasErrors('startYear')}" th:errors="*{startYear}" class="text-danger">Error message</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="endYear">end Year:</label>
                         <input th:field="*{endYear}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="endYear" aria-describedby="endYearHelp"
+                               type="number" class="form-control text-center" id="endYear" aria-describedby="endYearHelp"
                                name="endYear"/>
                         <small th:if="${#fields.hasErrors('endYear')}" th:errors="*{endYear}" class="text-danger">Error message</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="brandName"><h5>All available brands</h5></label>
                         <select multiple="false" class="form-control text-center"
-                                id="brandName" name="name" th:field="*{brandName}">
+                                id="brandName" name="brandName" th:field="*{brandName}">
                             <option th:each="brand : ${allBrands}"
                                     th:value="${brand.name}"
                                     th:text="${brand.name}">Brand name

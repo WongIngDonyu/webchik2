@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head"/>
 <link rel="stylesheet" href="/css/bootstrap.min.css"/>
 <body class="d-flex flex-column h-100">
@@ -15,17 +15,9 @@
                 <div><span th:text="'Last update of Database:'"></span>&nbsp;
                     <span th:text="${#dates.createNow()}"></span>
                 </div>
-                <div class="justify-content-center" sec:authorize="isAuthenticated()">
-                    <h1>Offer Statistics</h1>
-
                 <div>
-                    <p>Manual Offers: <span th:text="${manualCount}"></span></p>
-                    <p>Automatic Offers: <span th:text="${automaticCount}"></span></p>
-                </div>
-                <div>
-                    <span th:text="'Average Price of Offers:'"></span>
+                    <span th:text="'Average Price of Offers:'"></span>&nbsp;
                     <span th:text="${averagePrice}"></span>
-                </div>
                 </div>
                 <table class="table table-striped mt-5">
                     <thead>

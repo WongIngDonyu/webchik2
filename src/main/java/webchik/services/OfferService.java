@@ -1,6 +1,7 @@
 package webchik.services;
 
 
+import webchik.models.Offer;
 import webchik.services.dtos.AddOfferDto;
 import webchik.services.dtos.OfferDto;
 import webchik.services.dtos.ShowOfferInfoDto;
@@ -20,4 +21,8 @@ public interface OfferService <I extends UUID>{
 
     AddOfferDto add(AddOfferDto offer);
     ShowOfferInfoDto update(ShowOfferInfoDto offerDto);
+
+    double averagePrice();
+
+    long getCountByTransmission(Offer.Transmission transmission);
 }

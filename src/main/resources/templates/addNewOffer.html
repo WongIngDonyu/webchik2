@@ -63,21 +63,21 @@
                     <div class="mb-3">
                         <label class="form-label" for="mileage">Mileage:</label>
                         <input th:field="*{mileage}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="mileage" aria-describedby="mileageHelp"
+                               type="number" class="form-control text-center" id="mileage" aria-describedby="mileageHelp"
                                name="mileage"/>
                         <small th:if="${#fields.hasErrors('mileage')}" th:errors="*{mileage}" class="text-danger">Error message</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="year">Year:</label>
                         <input th:field="*{year}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="year" aria-describedby="yearHelp"
-                               name="endYear"/>
+                               type="number" class="form-control text-center" id="year" aria-describedby="yearHelp"
+                               name="year"/>
                         <small th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="text-danger">Error message</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="price">Price:</label>
                         <input th:field="*{price}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="price" aria-describedby="priceHelp"
+                               type="number" class="form-control text-center" id="price" aria-describedby="priceHelp"
                                name="price"/>
                         <small th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">Error message</small>
                     </div>
@@ -107,7 +107,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="username"><h5>All available users</h5></label>
                         <select multiple="false" class="form-control text-center"
-                                id="username" name="name" th:field="*{username}">
+                                id="username" name="username" th:field="*{username}">
                             <option th:each="user : ${allUsers}"
                                     th:value="${user.username}"
                                     th:text="${user.username}">Username
@@ -120,7 +120,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="modelName"><h5>All available models</h5></label>
                         <select multiple="false" class="form-control text-center"
-                                id="modelName" name="name" th:field="*{modelName}">
+                                id="modelName" name="modelName" th:field="*{modelName}">
                             <option th:each="model : ${allModels}"
                                     th:value="${model.name}"
                                     th:text="${model.name}">Model name
@@ -137,7 +137,7 @@
                                name="imageUrl"/>
                         <small th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="text-danger">Error message</small>
                     </div>
-                    <button type="submit" class="btn btn-secondary">Add Model</button>
+                    <button type="submit" class="btn btn-secondary">Add Offer</button>
                 </form>
             </div>
         </div>

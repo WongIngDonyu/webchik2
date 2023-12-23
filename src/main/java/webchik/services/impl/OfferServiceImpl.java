@@ -98,4 +98,19 @@ public class OfferServiceImpl implements OfferService<UUID> {
             return modelMapper.map(offerRepository.saveAndFlush(offer), ShowOfferInfoDto.class);
 
     }
+
+    @Override
+    public double averagePrice() {
+        List<Offer> offers = offerRepository.findAll();
+        if (offers.isEmpty()) {
+            return 0.0;
+        }
+        double totalPrice = offers.stream().mapToDouble(Offer::getPrice).sum();
+        return totalPrice/offers.size();
+    }
+
+    @Override
+    public long getCountByTransmission(Offer.Transmission transmission) {
+        return offerRepository.countByTransmission(transmission);
+    }
 }

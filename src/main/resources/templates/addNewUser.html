@@ -38,7 +38,7 @@
                         <small th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">Error message</small>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="lastName">end Year:</label>
+                        <label class="form-label" for="lastName">last Name:</label>
                         <input th:field="*{lastName}" th:errorclass="is-invalid"
                                type="text" class="form-control text-center" id="lastName" aria-describedby="lastNameHelp"
                                name="lastName"/>
@@ -47,7 +47,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="password">password:</label>
                         <input th:field="*{password}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="password" aria-describedby="passwordHelp"
+                               type="password" class="form-control text-center" id="password" aria-describedby="passwordHelp"
                                name="password"/>
                         <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">Error message</small>
                     </div>

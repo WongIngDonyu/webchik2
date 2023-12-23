@@ -15,11 +15,6 @@ public class UserRegistrationDto {
 
     private String imageUrl;
 
-    // Делайте проверку на уникальность
-    private String email;
-
-    private String confirmPassword;
-
     public UserRegistrationDto() {}
 
     @NotEmpty(message = "Username must not be empty!")
@@ -65,21 +60,4 @@ public class UserRegistrationDto {
         this.imageUrl = imageUrl;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-    @NotEmpty(message = "Email cannot be null or empty!")
-    @Email
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

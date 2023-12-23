@@ -42,7 +42,7 @@ public class OfferController {
         model.addAttribute("offers", offerService.getAll());
         return "allOffers";
     }
-    @GetMapping("/find2/{id}")
+    @GetMapping("/find/{id}")
     public String viewAllOffers2(Model model, @PathVariable("id") UUID uuid){
         Optional<ShowOfferInfoDto> offerOptional = offerService.findOffer(uuid);
         offerOptional.ifPresent(offer -> model.addAttribute("offer", offer));
@@ -51,7 +51,7 @@ public class OfferController {
         return "allOffers2";
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/find2/{id}")
     public String findOffer(Model model, @PathVariable("id") UUID uuid){
         Optional<OfferDto> dbOffer = offerService.findOffer(uuid);
         if(dbOffer.isPresent()){

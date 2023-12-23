@@ -3,6 +3,7 @@ package webchik.services.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import webchik.models.User;
 import webchik.repositories.UserRepository;
@@ -28,11 +29,13 @@ public class UserServiceImpl implements UserService<UUID> {
     private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
     private final UserRoleService userRoleService;
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, UserRoleService userRoleService) {
+    private PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, UserRoleService userRoleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
         this.userRoleService = userRoleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -92,6 +95,7 @@ public class UserServiceImpl implements UserService<UUID> {
             throw new NoSuchElementException("User not found");
         }
             User user1 = modelMapper.map(userDto, User.class);
+            user1.setPassword(passwordEncoder.encode(user1.getPassword()));
             user1.setModified(LocalDateTime.now());
             user1.setCreated(dbUser.get().getCreated());
             return modelMapper.map(userRepository.saveAndFlush(user1), ShowUserInfoDto.class);

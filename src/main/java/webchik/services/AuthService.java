@@ -23,19 +23,8 @@ public class AuthService {
         this.userRoleRepository = userRoleRepository;
     }
     public void register(UserRegistrationDto registrationDTO) {
-        if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
-            throw new RuntimeException("passwords.match");
-        }
-
-        //Optional<User> byEmail = this.userRepository.findByEmail(registrationDTO.getEmail());
-
-        //if (byEmail.isPresent()) {
-        //    throw new RuntimeException("email.used");
-        //}
-
         var userRole = userRoleRepository.
                 findByRole(UserRole.Role.USER).orElseThrow();
-
         User user = new User(
                 registrationDTO.getUsername(),
                 passwordEncoder.encode(registrationDTO.getPassword()),

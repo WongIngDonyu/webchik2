@@ -63,21 +63,21 @@
                     <div class="mb-3">
                         <label class="form-label" for="mileage">Mileage:</label>
                         <input th:field="*{mileage}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="mileage" aria-describedby="mileageHelp"
+                               type="number" class="form-control text-center" id="mileage" aria-describedby="mileageHelp"
                                name="mileage"/>
                         <small th:if="${#fields.hasErrors('mileage')}" th:errors="*{mileage}" class="text-danger">Error message</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="year">Year:</label>
                         <input th:field="*{year}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="year" aria-describedby="yearHelp"
+                               type="number" class="form-control text-center" id="year" aria-describedby="yearHelp"
                                name="endYear"/>
                         <small th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="text-danger">Error message</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="price">Price:</label>
                         <input th:field="*{price}" th:errorclass="is-invalid"
-                               type="text" class="form-control text-center" id="price" aria-describedby="priceHelp"
+                               type="number" class="form-control text-center" id="price" aria-describedby="priceHelp"
                                name="price"/>
                         <small th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">Error message</small>
                     </div>

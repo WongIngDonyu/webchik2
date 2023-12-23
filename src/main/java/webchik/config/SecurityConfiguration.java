@@ -33,8 +33,8 @@ public class SecurityConfiguration {
                                         .permitAll().
                                         requestMatchers("/", "/users/login", "/users/register", "/users/login-error")
                                         .permitAll().
-                                        requestMatchers("/users/profile").authenticated().
-                                        requestMatchers("/companies/add","/companies/company-delete/","/employees/add", "/employees/employee-delete/").hasRole(UserRole.Role.ADMIN.name()).
+                                        requestMatchers("/users/profile", "/offer/find/{id}", "offer/create").authenticated().
+                                        requestMatchers("/admin/panel", "/brand/**", "/model/**", "/user/**", "/brand/**", "/offer/change/{id}", "/offer/delete/{id}").hasRole(UserRole.Role.ADMIN.name()).
                                         anyRequest().authenticated()
                 )
                 .formLogin(
