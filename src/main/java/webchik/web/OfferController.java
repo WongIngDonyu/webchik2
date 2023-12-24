@@ -1,6 +1,7 @@
 package webchik.web;
 
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -10,14 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import webchik.models.Offer;
-import webchik.models.User;
 import webchik.services.ModelService;
 import webchik.services.OfferService;
 import webchik.services.UserService;
 import webchik.services.dtos.*;
 
-import java.util.List;
+import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,33 +44,14 @@ public class OfferController {
     public void setModelService(ModelService modelService) {
         this.modelService = modelService;
     }
-
-    @GetMapping("/all")
-    public String viewAllOffers(Model model){
-        model.addAttribute("offers", offerService.getAll());
-        return "allOffers";
-    }
     @GetMapping("/find/{id}")
-    public String viewAllOffers2(Model model, @PathVariable("id") UUID uuid){
+    public String viewAllOffers2(Model model, @PathVariable("id") UUID uuid, Principal principal){
+        LOG.log(Level.INFO, "Show more information about Offer for " + principal.getName());
         Optional<ShowOfferInfoDto> offerOptional = offerService.findOffer(uuid);
         offerOptional.ifPresent(offer -> model.addAttribute("offer", offer));
         model.addAttribute("user", userService.findByUsername(offerOptional.get().getUsername()));
         model.addAttribute("model", modelService.findByName(offerOptional.get().getModelName()));
         return "allOffers2";
-    }
-
-    @GetMapping("/find2/{id}")
-    public String findOffer(Model model, @PathVariable("id") UUID uuid){
-        Optional<OfferDto> dbOffer = offerService.findOffer(uuid);
-        if(dbOffer.isPresent()){
-            OfferDto offerDto = dbOffer.get();
-            model.addAttribute("offerDto", offerDto);
-            return "findOffer";
-        }
-        else {
-            return "offerNotFound";
-        }
-
     }
 
     @PostMapping("/delete/{id}")
@@ -108,7 +88,7 @@ public class OfferController {
         model.addAttribute("addOffer", modelMapper.map(dbOffer, AddOfferDto.class));
         model.addAttribute("allUsers", userService.allUsers());
         model.addAttribute("allModels", modelService.allModels());
-            return "addNewOffer2";
+            return "changeOffer";
         }
     @PostMapping("/change/{id}")
     public String saveChangeOffer(@Valid  AddOfferDto addOffer,BindingResult bindingResult, RedirectAttributes redirectAttributes) {

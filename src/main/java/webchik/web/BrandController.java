@@ -24,7 +24,6 @@ import java.util.UUID;
 public class BrandController {
     private BrandService brandService;
     private final ModelMapper modelMapper;
-    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     public BrandController(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
@@ -35,32 +34,16 @@ public class BrandController {
         this.brandService = brandService;
     }
 
-    @GetMapping("/all")
-    public String viewAllBrands(Model model, Principal principal){
-        LOG.log(Level.INFO, "Show all Brands for " + principal.getName());
-        model.addAttribute("brands", brandService.getAll());
-        return "allBrands";
-    }
 
-    @GetMapping("/find/{id}")
-    public String findBrand(Model model, @PathVariable("id") UUID uuid){
-        Optional<BrandDto> dbBrand = brandService.findBrand(uuid);
-        if (dbBrand.isPresent()) {
-            BrandDto brand = dbBrand.get();
-            model.addAttribute("brand", brand);
-            return "findBrand";
-        } else {
-            return "brandNotFound";
-        }
-    }
     @PostMapping("/delete/{id}")
-    public String deleteBrand(@PathVariable("id") UUID uuid){
+    public String deleteBrand(@PathVariable("id") UUID uuid, Principal principal){
         brandService.delete(uuid);
         return "redirect:/admin/panel";
     }
 
     @GetMapping("/create")
     public String addNewBrand(){
+
         return "addNewBrand";
     }
 
@@ -86,7 +69,7 @@ public class BrandController {
     public String changeBrand(Model model, @PathVariable("id") UUID uuid){
         Optional<ShowBrandInfoDto> dbBrand = brandService.findBrand(uuid);
         model.addAttribute("brandDto", modelMapper.map(dbBrand, AddBrandDto.class));
-            return "addNewBrand2";
+            return "changeBrand";
     }
     @PostMapping("/change/{id}")
     public String saveChangeBrand(@Valid AddBrandDto brandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {

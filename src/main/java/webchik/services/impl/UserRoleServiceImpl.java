@@ -24,11 +24,6 @@ public class UserRoleServiceImpl implements UserRoleService<UUID> {
     }
 
     @Override
-    public void delete(UserRoleDto userRole) {
-        userRoleRepository.deleteById(userRole.getId());
-    }
-
-    @Override
     public void delete(UUID id) {
         userRoleRepository.deleteById(id);
     }

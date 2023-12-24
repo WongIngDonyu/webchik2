@@ -1,6 +1,9 @@
 package webchik.web;
 
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,7 @@ import java.security.Principal;
 @RequestMapping("/users")
 public class AuthController {
     private AuthService authService;
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     @Autowired
     public AuthController(AuthService authService) {
@@ -51,16 +55,13 @@ public class AuthController {
 
             return "redirect:/users/register";
         }
-
         this.authService.register(userRegistrationDto);
-
         return "redirect:/users/login";
     }
     @PostMapping("/login-error")
     public String onFailedLogin(
             @ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY) String username,
             RedirectAttributes redirectAttributes) {
-
         redirectAttributes.addFlashAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, username);
         redirectAttributes.addFlashAttribute("badCredentials", true);
 
@@ -68,6 +69,7 @@ public class AuthController {
     }
     @GetMapping("/profile")
     public String profile(Principal principal, Model model) {
+        LOG.log(Level.INFO, "Show profile for " + principal.getName());
         String username = principal.getName();
         User user = authService.getUser(username);
         UserProfileView userProfileView = new UserProfileView(

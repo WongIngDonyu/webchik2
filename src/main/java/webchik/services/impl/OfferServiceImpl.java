@@ -15,7 +15,6 @@ import webchik.services.ModelService;
 import webchik.services.OfferService;
 import webchik.services.UserService;
 import webchik.services.dtos.AddOfferDto;
-import webchik.services.dtos.OfferDto;
 import webchik.services.dtos.ShowOfferInfoDto;
 
 import java.time.LocalDateTime;
@@ -43,11 +42,6 @@ public class OfferServiceImpl implements OfferService<UUID> {
         this.userRepository = userRepository;
         this.userService = userService;
         this.modelService = modelService;
-    }
-
-    @Override
-    public void delete(OfferDto offer) {
-        offerRepository.deleteById(offer.getId());
     }
 
     @Override

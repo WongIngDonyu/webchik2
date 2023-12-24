@@ -12,7 +12,6 @@ import webchik.services.UserRoleService;
 import webchik.services.UserService;
 import webchik.services.dtos.AddUserDto;
 import webchik.services.dtos.ShowUserInfoDto;
-import webchik.services.dtos.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,10 +37,6 @@ public class UserServiceImpl implements UserService<UUID> {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public void delete(UserDto user) {
-        userRepository.deleteById(user.getId());
-    }
 
     @Override
     public void delete(UUID id) {
@@ -63,13 +58,7 @@ public class UserServiceImpl implements UserService<UUID> {
         }
     }
 
-    @Override
     //@Cacheable("users")
-
-    public List<ShowUserInfoDto> getAll() {
-        return userRepository.findAll().stream().map((m)->modelMapper.map(m, ShowUserInfoDto.class)).collect(Collectors.toList());
-    }
-
     @Override
     public List<ShowUserInfoDto> allUsers() {
         return userRepository.findAll().stream().map((m)->modelMapper.map(m, ShowUserInfoDto.class)).collect(Collectors.toList());

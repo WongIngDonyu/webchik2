@@ -8,7 +8,6 @@ import webchik.models.Brand;
 import webchik.repositories.BrandRepository;
 import webchik.services.BrandService;
 import webchik.services.dtos.AddBrandDto;
-import webchik.services.dtos.BrandDto;
 import webchik.services.dtos.ShowBrandInfoDto;
 
 import java.time.LocalDateTime;
@@ -30,21 +29,11 @@ public class BrandServiceImpl implements BrandService<UUID> {
     }
 
     @Override
-   // @Cacheable("brands")
-    public List<ShowBrandInfoDto> getAll() {
-        return brandRepository.findAll().stream().map((b) -> modelMapper.map(b, ShowBrandInfoDto.class)).collect(Collectors.toList());
-    }
-
-    @Override
-    public void delete(BrandDto brand) {
-        brandRepository.deleteById(brand.getId());
-    }
-
-    @Override
     public void delete(UUID id) {
         brandRepository.deleteById(id);
     }
 
+    // @Cacheable("brands")
     @Override
     public List<ShowBrandInfoDto> allBrands() {
         return brandRepository.findAll().stream().map((b) -> modelMapper.map(b, ShowBrandInfoDto.class)).collect(Collectors.toList());

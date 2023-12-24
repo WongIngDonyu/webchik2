@@ -1,5 +1,8 @@
 package webchik.web;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,8 @@ import webchik.services.ModelService;
 import webchik.services.OfferService;
 import webchik.services.UserService;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -17,6 +22,8 @@ public class AdminController {
     private BrandService brandService;
     private ModelService modelService;
     private UserService userService;
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
+
     @Autowired
     public void setOfferService(OfferService offerService) {
         this.offerService = offerService;
@@ -34,11 +41,12 @@ public class AdminController {
         this.userService = userService;
     }
     @GetMapping("/panel")
-    public String homePage(Model model) {
+    public String homePage(Model model, Principal principal) {
+        LOG.log(Level.INFO, "Show admin panel for " + principal.getName());
         model.addAttribute("offers", offerService.getAll());
-        model.addAttribute("models", modelService.getAll());
-        model.addAttribute("users", userService.getAll());
-        model.addAttribute("brands", brandService.getAll());
+        model.addAttribute("models", modelService.allModels());
+        model.addAttribute("users", userService.allUsers());
+        model.addAttribute("brands", brandService.allBrands());
         return "adminPanel";
     }
 }

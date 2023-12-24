@@ -10,12 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import webchik.models.User;
 import webchik.services.UserRoleService;
 import webchik.services.UserService;
 import webchik.services.dtos.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 @Controller
@@ -37,25 +35,6 @@ public class UserController {
     @Autowired
     public void setUserRoleService(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
-    }
-    @GetMapping("/all")
-    public String viewAllUsers(Model model){
-        List<ShowUserInfoDto> users = userService.getAll();
-        model.addAttribute("users", users);
-        return "allUsers";
-    }
-
-    @GetMapping("/find/{id}")
-    public String findUser(Model model, @PathVariable("id") UUID uuid){
-        Optional<UserDto> dbUser = userService.findUser(uuid);
-        if(dbUser.isPresent()){
-            UserDto userDto = dbUser.get();
-            model.addAttribute("userDto", userDto);
-            return "findUser";
-        }
-        else {
-            return "userNotFound";
-        }
     }
 
     @PostMapping("/deActivation/{id}")
@@ -96,7 +75,7 @@ public class UserController {
         Optional<ShowUserInfoDto> dbUser = userService.findUser(id);
         model.addAttribute("addUser", modelMapper.map(dbUser, AddUserDto.class));
         model.addAttribute("roles", userRoleService.getAll());
-        return "addNewUser2";
+        return "changeUser";
 
     }
     @PostMapping("/change/{id}")

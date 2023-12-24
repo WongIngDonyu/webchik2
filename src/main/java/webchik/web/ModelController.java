@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +14,6 @@ import webchik.services.BrandService;
 import webchik.services.ModelService;
 import webchik.services.dtos.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,26 +35,6 @@ public class ModelController {
     @Autowired
     public void setBrandService(BrandService brandService) {
         this.brandService = brandService;
-    }
-
-    @GetMapping("/all")
-    public String viewAllModels(Model model){
-        List<ModelDto> models = modelService.getAll();
-        model.addAttribute("models",models);
-        return "allModels";
-    }
-
-    @GetMapping("/find/{id}")
-    public String findModel(Model model, @PathVariable("id") UUID uuid){
-        Optional<ModelDto> dbModel = modelService.findModel(uuid);
-        if(dbModel.isPresent()){
-            ModelDto modelDto = dbModel.get();
-            model.addAttribute("modelDto",modelDto);
-            return "findModel";
-        }
-        else{
-            return "modelNotFound";
-        }
     }
 
     @PostMapping("/delete/{id}")
@@ -91,7 +69,7 @@ public class ModelController {
         Optional<ShowModelInfoDto> dbModel = modelService.findModel(uuid);
         model.addAttribute("addModel", modelMapper.map(dbModel, AddModelDto.class));
         model.addAttribute("allBrands", brandService.allBrands());
-        return "addNewModel2";
+        return "changeModel";
     }
 
     @PostMapping("/change/{id}")
