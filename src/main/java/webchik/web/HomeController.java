@@ -25,8 +25,7 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model, Principal principal) {
-        LOG.log(Level.INFO, "Show home for " + principal.getName());
+    public String homePage(Model model) {
         model.addAttribute("offers", offerService.getAll());
         model.addAttribute("averagePrice", offerService.averagePrice());
         model.addAttribute("manualCount", offerService.getCountByTransmission(Offer.Transmission.Manual));
