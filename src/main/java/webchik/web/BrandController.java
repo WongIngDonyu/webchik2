@@ -55,14 +55,14 @@ public class BrandController {
     }
 
     @PostMapping("/create")
-    public String addNewBrand(@Valid AddBrandDto addBrandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addNewBrand(@Valid AddBrandDto addBrandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addBrandDto", addBrandDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
             return "redirect:/brand/create";
         }
-
         brandService.add(addBrandDto);
+        LOG.info("Create new Brand ("+addBrandDto.getName()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
 
@@ -74,13 +74,14 @@ public class BrandController {
             return "changeBrand";
     }
     @PostMapping("/change/{id}")
-    public String saveChangeBrand(@Valid AddBrandDto brandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String saveChangeBrand(@Valid AddBrandDto brandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandDto", brandDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
             return "redirect:/brand/change/{id}";
         }
         brandService.update(brandDto);
+        LOG.info("Change  Brand ("+brandDto.getName()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
 }

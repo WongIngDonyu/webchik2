@@ -9,6 +9,7 @@ import webchik.repositories.UserRepository;
 import webchik.repositories.UserRoleRepository;
 import webchik.services.dtos.UserRegistrationDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class AuthService {
         );
 
         user.setUserRoles(List.of(userRole));
-
+        user.setCreated(LocalDateTime.now());
         this.userRepository.save(user);
     }
 

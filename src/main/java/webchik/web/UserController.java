@@ -14,6 +14,7 @@ import webchik.services.UserRoleService;
 import webchik.services.UserService;
 import webchik.services.dtos.*;
 
+import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
 @Controller
@@ -38,14 +39,16 @@ public class UserController {
     }
 
     @PostMapping("/deActivation/{id}")
-    public String deleteUser(@PathVariable("id") UUID id){
+    public String deActivationUser(@PathVariable("id") UUID id, Principal principal){
         userService.deActivation(id);
+        LOG.info("De activation User ("+id+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
 
     @PostMapping("/activation/{id}")
-    public String activationUser(@PathVariable("id") UUID id){
+    public String activationUser(@PathVariable("id") UUID id, Principal principal){
         userService.activation(id);
+        LOG.info("Activation User ("+id+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
 
@@ -61,31 +64,33 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String addNewUser(@Valid AddUserDto addUserDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String addNewUser(@Valid AddUserDto addUserDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("addUserDto", addUserDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addUserDto", bindingResult);
             return "redirect:/user/create";
         }
         userService.add(addUserDto);
+        LOG.info("Create new User ("+addUserDto.getUsername()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
     @GetMapping("/change/{id}")
     public String changeUser(Model model, @PathVariable("id") UUID id){
         Optional<ShowUserInfoDto> dbUser = userService.findUser(id);
-        model.addAttribute("addUser", modelMapper.map(dbUser, AddUserDto.class));
+        model.addAttribute("addUser", modelMapper.map(dbUser, ChangeUserDto.class));
         model.addAttribute("roles", userRoleService.getAll());
         return "changeUser";
 
     }
     @PostMapping("/change/{id}")
-    public String saveChangeUser(@Valid  AddUserDto addUser, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String saveChangeUser(@Valid  ChangeUserDto addUser, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("addUser", addUser);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addUser", bindingResult);
             return "redirect:/user/change/{id}";
         }
         userService.update(addUser);
+        LOG.info("Change User ("+addUser.getUsername()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
 }

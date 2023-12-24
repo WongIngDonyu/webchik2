@@ -55,8 +55,9 @@ public class OfferController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteOffer(@PathVariable("id") UUID uuid){
+    public String deleteOffer(@PathVariable("id") UUID uuid, Principal principal){
         offerService.delete(uuid);
+        LOG.info("Delete Offer ("+uuid+") by  "+principal.getName());
         return "redirect:/admin/panel";
     }
 
@@ -73,13 +74,14 @@ public class OfferController {
     }
 
     @PostMapping("/create")
-    public String addNewOffer(@Valid AddOfferDto addOfferDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String addNewOffer(@Valid AddOfferDto addOfferDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("addOfferDto", addOfferDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferDto", bindingResult);
             return "redirect:/offer/create";
         }
         offerService.add(addOfferDto);
+        LOG.info("Create new Offer ("+addOfferDto.getId()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
     @GetMapping("/change/{id}")
@@ -91,14 +93,15 @@ public class OfferController {
             return "changeOffer";
         }
     @PostMapping("/change/{id}")
-    public String saveChangeOffer(@Valid  AddOfferDto addOffer,BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String saveChangeOffer(@Valid  AddOfferDto addOffer,BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("addOffer", addOffer);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOffer", bindingResult);
             return "redirect:/offer/change/{id}";
         }
         offerService.update(addOffer);
-            return "redirect:/admin/panel";
+        LOG.info("Change Offer ("+addOffer.getId()+") by "+principal.getName());
+        return "redirect:/admin/panel";
 
     }
 }

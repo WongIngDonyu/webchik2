@@ -4,6 +4,7 @@ package webchik.services;
 
 import webchik.models.User;
 import webchik.services.dtos.AddUserDto;
+import webchik.services.dtos.ChangeUserDto;
 import webchik.services.dtos.ShowUserInfoDto;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserService <I extends UUID>{
     Optional<ShowUserInfoDto> findUser(UUID id);
 
     AddUserDto add(AddUserDto user);
-    AddUserDto update(AddUserDto user);
+    ChangeUserDto update(ChangeUserDto user);
     User findByUsername (String username);
     void activation(UUID uuid);
 }

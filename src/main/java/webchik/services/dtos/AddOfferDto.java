@@ -72,7 +72,7 @@ public class AddOfferDto {
         this.transmission = transmission;
     }
     @NotNull(message = "Model year must not be empty!")
-    @Min(value =  2000, message = "Year must be greater than or equal to 2000")
+    @Min(value =  1, message = "Year must be greater than or equal to 1")
     public int getYear() {
         return year;
     }

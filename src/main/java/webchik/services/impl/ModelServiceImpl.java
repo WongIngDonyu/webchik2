@@ -10,6 +10,7 @@ import webchik.repositories.BrandRepository;
 import webchik.repositories.ModelRepository;
 import webchik.services.ModelService;
 import webchik.services.dtos.AddModelDto;
+import webchik.services.dtos.ChangeModelDto;
 import webchik.services.dtos.ShowModelInfoDto;
 
 import java.time.LocalDateTime;
@@ -60,7 +61,7 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     }
 
     @Override
-    public AddModelDto update(AddModelDto modelDto) {
+    public ChangeModelDto update(ChangeModelDto modelDto) {
         Optional<Model> dbModel = modelRepository.findById(modelDto.getId());
         if (dbModel.isEmpty()) {
             throw new NoSuchElementException("Model not found");
@@ -71,7 +72,9 @@ public class ModelServiceImpl  implements ModelService<UUID> {
             throw new NoSuchElementException("Brand not found");
         }
         model.setBrand(brandService.findBrandByName(modelDto.getBrandName()));
-            return modelMapper.map(modelRepository.saveAndFlush(model), AddModelDto.class);
+        model.setModified(LocalDateTime.now());
+        model.setCreated(dbModel.get().getCreated());
+            return modelMapper.map(modelRepository.saveAndFlush(model), ChangeModelDto.class);
         }
 
     @Override

@@ -11,6 +11,7 @@ import webchik.repositories.UserRoleRepository;
 import webchik.services.UserRoleService;
 import webchik.services.UserService;
 import webchik.services.dtos.AddUserDto;
+import webchik.services.dtos.ChangeUserDto;
 import webchik.services.dtos.ShowUserInfoDto;
 
 import java.time.LocalDateTime;
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService<UUID> {
     }
 
     @Override
-    public AddUserDto update(AddUserDto userDto) {
+    public ChangeUserDto update(ChangeUserDto userDto) {
         Optional<User> dbUser = userRepository.findById(userDto.getId());
         if (dbUser.isEmpty()) {
             throw new NoSuchElementException("User not found");
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService<UUID> {
             user1.setPassword(passwordEncoder.encode(user1.getPassword()));
             user1.setModified(LocalDateTime.now());
             user1.setCreated(dbUser.get().getCreated());
-            return modelMapper.map(userRepository.saveAndFlush(user1), AddUserDto.class);
+            return modelMapper.map(userRepository.saveAndFlush(user1), ChangeUserDto.class);
         }
 
     @Override

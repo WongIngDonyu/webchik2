@@ -14,6 +14,7 @@ import webchik.services.BrandService;
 import webchik.services.ModelService;
 import webchik.services.dtos.*;
 
+import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,8 +39,9 @@ public class ModelController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteModel(@PathVariable("id") UUID uuid){
+    public String deleteModel(@PathVariable("id") UUID uuid, Principal principal){
         modelService.delete(uuid);
+        LOG.info("Delete Model ("+uuid+") by  "+principal.getName());
         return "redirect:/admin/panel";
     }
 
@@ -55,31 +57,33 @@ public class ModelController {
     }
 
     @PostMapping("/create")
-    public String addNewModel(@Valid AddModelDto addModelDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String addNewModel(@Valid AddModelDto addModelDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("addModelDto", addModelDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModelDto", bindingResult);
             return "redirect:/model/create";
         }
         modelService.add(addModelDto);
+        LOG.info("Create new Model ("+addModelDto.getName()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
     @GetMapping("/change/{id}")
     public String changeModel(Model model, @PathVariable("id") UUID uuid){
         Optional<ShowModelInfoDto> dbModel = modelService.findModel(uuid);
-        model.addAttribute("addModel", modelMapper.map(dbModel, AddModelDto.class));
+        model.addAttribute("addModel", modelMapper.map(dbModel, ChangeModelDto.class));
         model.addAttribute("allBrands", brandService.allBrands());
         return "changeModel";
     }
 
     @PostMapping("/change/{id}")
-    public String saveChangeModel(@Valid AddModelDto addModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String saveChangeModel(@Valid ChangeModelDto addModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("addModel", addModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModel", bindingResult);
             return "redirect:/model/change/{id}";
         }
         modelService.update(addModel);
+        LOG.info("Change Model ("+addModel.getName()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
 }
