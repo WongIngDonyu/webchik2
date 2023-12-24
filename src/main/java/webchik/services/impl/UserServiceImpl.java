@@ -25,18 +25,14 @@ import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService<UUID> {
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
-    private final UserRoleService userRoleService;
     private PasswordEncoder passwordEncoder;
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, UserRoleService userRoleService, PasswordEncoder passwordEncoder) {
+
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
-        this.userRoleService = userRoleService;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public void delete(UUID id) {

@@ -56,6 +56,7 @@ public class AuthController {
             return "redirect:/users/register";
         }
         this.authService.register(userRegistrationDto);
+        LOG.info("Create new User: " + userRegistrationDto.getUsername());
         return "redirect:/users/login";
     }
     @PostMapping("/login-error")

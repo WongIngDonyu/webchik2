@@ -24,6 +24,7 @@ import java.util.UUID;
 public class BrandController {
     private BrandService brandService;
     private final ModelMapper modelMapper;
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     public BrandController(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
@@ -38,6 +39,7 @@ public class BrandController {
     @PostMapping("/delete/{id}")
     public String deleteBrand(@PathVariable("id") UUID uuid, Principal principal){
         brandService.delete(uuid);
+        LOG.info("Delete Brand ("+uuid+") by  "+principal.getName());
         return "redirect:/admin/panel";
     }
 
