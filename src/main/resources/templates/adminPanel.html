@@ -27,7 +27,8 @@
                     </thead>
                     <tbody>
                     <tr th:each="offer : ${offers}">
-                        <td><img src="/images/tesla.jpg" alt="Static Image" style="max-width: 300px; max-height: 300px;"></td>
+                        <td><img th:if="${offer.imageUrl != null}" th:src="${offer.imageUrl}" alt="Offer Image" style="max-width: 300px; max-height: 300px;">
+                            <img th:if="${offer.imageUrl == null}" th:src="@{/images/tesla.jpg}" alt="Default Offer Image" style="max-width: 300px; max-height: 300px;">   </td>
                         <td th:text="${offer.description}"></td>
                         <td th:text="${offer.engine}"></td>
                         <td th:text="${offer.mileage}"></td>

@@ -77,7 +77,8 @@ public class AuthController {
                 username,
                 user.getFirstName(),
                 user.getLastName(),
-                user.getOffers()
+                user.getOffers(),
+                user.getImageUrl()
         );
         model.addAttribute("user", userProfileView);
         return "profile";

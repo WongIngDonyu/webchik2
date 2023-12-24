@@ -10,7 +10,7 @@
             <div class="col-md-2"></div>
             <div class="jumbotron text-center rounded col-md-8 align-self-center pt-3">
                 <h1>Offer Information</h1>
-                <img src="/images/tesla.jpg" alt="Static Image" style="max-width: 300px; max-height: 300px;">
+                <img th:if="${offer.imageUrl}" th:src="${offer.imageUrl}" alt="Offer Image" style="max-width: 300px; max-height: 300px;">
                 <p>Description: <span th:text="${offer.description}"></span></p>
                 <p>Engine: <span th:text="${offer.engine}"></span></p>
                 <p>Mileage: <span th:text="${offer.mileage}"></span></p>

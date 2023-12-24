@@ -11,14 +11,17 @@ public class UserProfileView {
 
     private String lastName;
     private List<Offer> offers;
+    private String imageUrl;
+
     public UserProfileView() {
     }
 
-    public UserProfileView(String username, String firstName, String lastName, List<Offer> offers) {
+    public UserProfileView(String username, String firstName, String lastName, List<Offer> offers,String imageUrl) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.offers = offers;
+        this.imageUrl = imageUrl;
     }
 
     public String getUsername() {
@@ -51,5 +54,13 @@ public class UserProfileView {
 
     public void setOffers(List<Offer> offers) {
         this.offers = offers;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

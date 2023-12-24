@@ -58,7 +58,7 @@ public class DataInitializer implements CommandLineRunner {
             userRoleRepository.save(normalUserRole);
         }
         var userRole = userRoleRepository.findByRole(UserRole.Role.ADMIN).orElseThrow();
-        var user = new User("Ameruk", passwordEncoder.encode(defaultPassword), "User","User",true,"User",null,null);
+        var user = new User("Ameruk", passwordEncoder.encode(defaultPassword), "User","User",true,null,null,null);
         user.setUserRoles(List.of(userRole));
         user.setCreated(LocalDateTime.now());
         userRepository.save(user);
@@ -70,6 +70,8 @@ public class DataInitializer implements CommandLineRunner {
         String[] passwords = {"123456789", "Smurf123", "WongIngDonyu", "GazzyXgod", "NeerrySergo"};
         String[] firsNames = {"Egor", "Grisha", "Oleg", "Vova", "Sergai"};
         String[] lastNames = {"Popov", "Sergov", "Plyhev", "Vorov", "Antonov"};
+        String[] urlsCars = {"https://tmna.aemassets.toyota.com/is/image/toyota/toyota/seo-category/desktop/hybridcarssummary2desktop.png?fit=constrain&qlt=100&wid=550&resMode=bisharp","https://cdn.ototeknikveri.com/Files/News/Big/fordun-buyuk-suv-modeli-explorera-makyaj.jpg", "https://www.autoscout24.fr/cms-content-assets/3r2vkWujvhyg4mcaL32ZFs-ef281aca7692905e71e7fbe1e902e807-chevrolet-camaro-l-01-1100.jpg", "https://i.gaw.to/content/photos/43/75/437594-honda-civic-hatchback-2020-l-alternative-pratique.jpeg", "https://cdn.motor1.com/images/mgl/q1VlL/s1/bmw-x7-m50i-pickup-truck-rendering.jpg"};
+        String[] urlsUsers = {"https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", "https://wallpapers.com/images/hd/cool-profile-picture-awled9dwo4qq2yv2.jpg", "https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944" , "https://image.winudf.com/v2/image1/bmV0LndsbHBwci5ib3lzX3Byb2ZpbGVfcGljdHVyZXNfc2NyZWVuXzBfMTY2NzUzNzYxN18wOTk/screen-0.webp?fakeurl=1&type=.webp" ,"https://assets-global.website-files.com/650865454c2393ac25711ff7/650865454c2393ac25714a3e_The%20best%20selfie%20Ideas%20for%20sm%20pfp.jpeg"};
 
         Random random = new Random();
         for (int i = 0; i < 5; i++) {
@@ -84,7 +86,7 @@ public class DataInitializer implements CommandLineRunner {
             int endYear = startYear + random.nextInt(101);
             addModelDto.setStartYear(startYear);
             addModelDto.setEndYear(endYear);
-            addModelDto.setImageUrl("Some URL" + i);
+            addModelDto.setImageUrl(urlsCars[i]);
             addModelDto.setBrandName(carBrands[i]);
             modelService.add(addModelDto);
             String username = usernames[i];
@@ -92,13 +94,13 @@ public class DataInitializer implements CommandLineRunner {
             String firsName = firsNames[i];
             String lastName = lastNames[i];
             var userRole2 = userRoleRepository.findByRole(UserRole.Role.USER).orElseThrow();
-            var user2 = new User(username, passwordEncoder.encode(password), firsName, lastName, true, "Some Url", null, null);
+            var user2 = new User(username, passwordEncoder.encode(password), firsName, lastName, true, urlsUsers[i], null, null);
             user2.setUserRoles(List.of(userRole2));
             user2.setCreated(LocalDateTime.now());
             userRepository.save(user2);
             AddOfferDto addOfferDto = new AddOfferDto();
             addOfferDto.setDescription(descriptions[i]);
-            addOfferDto.setImageUrl("Some URL" + i);
+            addOfferDto.setImageUrl(urlsCars[i]);
             Offer.Engine[] engines = Offer.Engine.values();
             addOfferDto.setEngine(engines[random.nextInt(engines.length)]);
             int randomMileage = random.nextInt(991) + 10;
