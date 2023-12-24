@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import webchik.models.Offer;
 
+import java.util.UUID;
+
 public class AddOfferDto {
     private String description;
     private Offer.Engine engine;
@@ -16,6 +18,7 @@ public class AddOfferDto {
     private int year;
     private String username;
     private String modelName;
+    private UUID id;
     @NotEmpty(message = "Description must not be empty!")
     @Size(min = 10,  message = "Description must be over 10 characters")
     public String getDescription() {
@@ -92,5 +95,13 @@ public class AddOfferDto {
 
     public void setModelName(String modelName) {
         this.modelName = modelName;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

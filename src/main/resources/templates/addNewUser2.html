@@ -11,7 +11,7 @@
                 <div class="justify-content-center">
                     <h1>Change User</h1>
                 </div>
-                <form th:action="@{'/user/change/' + ${user.id}}" th:method="post" th:object="${user}" class="m-md-auto w-50 pb-3">
+                <form th:action="@{/user/change/{id}(id=${addUser.id})}" th:method="post" th:object="${addUser}" class="m-md-auto w-50 pb-3">
                     <div class="mb-3">
                         <label class="form-label" for="username">Username:</label>
                         <input th:field="*{username}" th:errorclass="is-invalid"

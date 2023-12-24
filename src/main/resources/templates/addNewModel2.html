@@ -9,9 +9,9 @@
             <div class="col-md-2"></div>
             <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
                 <div class="justify-content-center">
-                    <h1>Add Model</h1>
+                    <h1>Change Model</h1>
                 </div>
-                <form th:action="@{'/model/change/' + ${modelDto.id}}" th:method="post" th:object="${modelDto}" class="m-md-auto w-50 pb-3">
+                <form th:action="@{/model/change/{id}(id=${addModel.id})}" th:method="post" th:object="${addModel}" class="m-md-auto w-50 pb-3">
                     <div class="mb-3">
                         <label class="form-label" for="name">Name:</label>
                         <input th:field="*{name}" th:errorclass="is-invalid"
@@ -93,7 +93,7 @@
                                name="imageUrl"/>
                         <small th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="text-danger">Error message</small>
                     </div>
-                    <button type="submit" class="btn btn-secondary">Add Model</button>
+                    <button type="submit" class="btn btn-secondary">Change Model</button>
                 </form>
             </div>
         </div>

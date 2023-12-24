@@ -1,9 +1,7 @@
 package webchik.services.impl;
 
 
-import jdk.jfr.Enabled;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import webchik.models.Brand;
@@ -66,17 +64,15 @@ public class BrandServiceImpl implements BrandService<UUID> {
     }
 
     @Override
-    public ShowBrandInfoDto update(ShowBrandInfoDto brandDto) {
+    public AddBrandDto update(AddBrandDto brandDto) {
         Optional<Brand> dbBrand = brandRepository.findById(brandDto.getId());
         if(dbBrand.isEmpty()){
             throw new NoSuchElementException("Brand not found");
         }
-        else {
             Brand brand1 = modelMapper.map(brandDto, Brand.class);
             brand1.setCreated(dbBrand.get().getCreated());
             brand1.setModified(LocalDateTime.now());
-            return modelMapper.map(brandRepository.saveAndFlush(brand1), ShowBrandInfoDto.class);
-        }
+            return modelMapper.map(brandRepository.saveAndFlush(brand1), AddBrandDto.class);
     }
 
     @Override

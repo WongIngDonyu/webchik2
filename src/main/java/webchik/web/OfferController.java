@@ -1,6 +1,9 @@
 package webchik.web;
 
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,12 @@ public class OfferController {
     private OfferService offerService;
     private UserService userService;
     private ModelService modelService;
+    private final ModelMapper modelMapper;
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
+
+    public OfferController(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
     @Autowired
     public void setOfferService(OfferService offerService) {
         this.offerService = offerService;
@@ -95,15 +104,20 @@ public class OfferController {
     }
     @GetMapping("/change/{id}")
     public String changeOffer(Model model, @PathVariable("id") UUID uuid){
-        Optional<ShowOfferInfoDto> dbOffer = offerService.findOffer(uuid);
-        dbOffer.ifPresent(offer -> model.addAttribute("offer", offer));
+        Optional<AddOfferDto> dbOffer = offerService.findOffer(uuid);
+        model.addAttribute("addOffer", modelMapper.map(dbOffer, AddOfferDto.class));
         model.addAttribute("allUsers", userService.allUsers());
         model.addAttribute("allModels", modelService.allModels());
             return "addNewOffer2";
         }
     @PostMapping("/change/{id}")
-    public String saveChangeOffer(@PathVariable("id") UUID uuid, @ModelAttribute  ShowOfferInfoDto offerDto) {
-            offerService.update(offerDto);
+    public String saveChangeOffer(@Valid  AddOfferDto addOffer,BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("addOffer", addOffer);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOffer", bindingResult);
+            return "redirect:/offer/change/{id}";
+        }
+        offerService.update(addOffer);
             return "redirect:/admin/panel";
 
     }

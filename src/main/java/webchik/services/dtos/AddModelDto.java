@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import webchik.models.Model;
 import webchik.validation.UniqueModelName;
 
+import java.util.UUID;
+
 public class AddModelDto {
     @UniqueModelName
     private String name;
@@ -15,6 +17,7 @@ public class AddModelDto {
     private int startYear;
     private int endYear;
     private String brandName;
+    private UUID id;
     @NotEmpty(message = "Model name must not be empty!")
     @Size(min = 3, max = 30, message = "Model name must be between 3 and 30 characters!")
     public String getName() {
@@ -66,5 +69,13 @@ public class AddModelDto {
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

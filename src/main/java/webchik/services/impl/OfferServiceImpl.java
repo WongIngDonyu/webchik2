@@ -77,7 +77,7 @@ public class OfferServiceImpl implements OfferService<UUID> {
     }
 
     @Override
-    public  ShowOfferInfoDto update(ShowOfferInfoDto offerDto){
+    public  AddOfferDto update(AddOfferDto offerDto){
         Optional<Offer> dbOffer = offerRepository.findById(offerDto.getId());
         if (dbOffer.isEmpty()) {
             throw new NoSuchElementException("Offer not found");
@@ -95,7 +95,7 @@ public class OfferServiceImpl implements OfferService<UUID> {
         offer.setModel(modelService.findByName(offerDto.getModelName()));
             offer.setModified(LocalDateTime.now());
             offer.setCreated(dbOffer.get().getCreated());
-            return modelMapper.map(offerRepository.saveAndFlush(offer), ShowOfferInfoDto.class);
+            return modelMapper.map(offerRepository.saveAndFlush(offer), AddOfferDto.class);
 
     }
 

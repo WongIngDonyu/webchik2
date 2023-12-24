@@ -55,10 +55,8 @@ public class UserRoleServiceImpl implements UserRoleService<UUID> {
         if(dbRole.isEmpty()){
             throw new NoSuchElementException("Role not found");
         }
-        else {
             UserRole userRole1 = modelMapper.map(userRole, UserRole.class);
             return modelMapper.map(userRoleRepository.saveAndFlush(userRole1), UserRoleDto.class);
-        }
     }
 
     @Override

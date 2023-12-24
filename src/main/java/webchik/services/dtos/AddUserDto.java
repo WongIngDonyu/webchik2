@@ -7,6 +7,7 @@ import webchik.models.UserRole;
 import webchik.validation.UniqueUserName;
 
 import java.util.List;
+import java.util.UUID;
 
 public class AddUserDto {
     @UniqueUserName
@@ -21,6 +22,8 @@ public class AddUserDto {
     private String imageUrl;
 
     private List<UserRole> userRoles;
+
+    private UUID id;
     @NotEmpty(message = "Username must not be empty!")
     @Size(min = 3, max = 30, message = "Username must be between 3 and 30 characters!")
     public String getUsername() {
@@ -70,5 +73,13 @@ public class AddUserDto {
 
     public void setUserRoles(List<UserRole> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

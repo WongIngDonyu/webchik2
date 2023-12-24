@@ -22,6 +22,6 @@ public interface BrandService <I extends UUID>{
     Optional<ShowBrandInfoDto> findBrand(UUID id);
 
     AddBrandDto add(AddBrandDto brand);
-    ShowBrandInfoDto update(ShowBrandInfoDto brand);
+    AddBrandDto update(AddBrandDto brand);
     Brand findBrandByName(String brandName);
 }

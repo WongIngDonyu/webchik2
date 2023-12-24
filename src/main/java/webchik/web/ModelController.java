@@ -1,7 +1,11 @@
 package webchik.web;
 
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +24,12 @@ import java.util.UUID;
 public class ModelController {
     private ModelService modelService;
     private BrandService brandService;
+    private final ModelMapper modelMapper;
+    private static final Logger LOG = LogManager.getLogger(Controller.class);
+
+    public ModelController(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
     @Autowired
     public void setModelService(ModelService modelService) {
         this.modelService = modelService;
@@ -79,14 +89,19 @@ public class ModelController {
     @GetMapping("/change/{id}")
     public String changeModel(Model model, @PathVariable("id") UUID uuid){
         Optional<ShowModelInfoDto> dbModel = modelService.findModel(uuid);
-        dbModel.ifPresent(modelDto -> model.addAttribute("modelDto", modelDto));
+        model.addAttribute("addModel", modelMapper.map(dbModel, AddModelDto.class));
         model.addAttribute("allBrands", brandService.allBrands());
         return "addNewModel2";
     }
 
     @PostMapping("/change/{id}")
-    public String saveChangeModel(@PathVariable("id") UUID uuid, @ModelAttribute  ShowModelInfoDto modelDto) {
-        modelService.update(modelDto);
+    public String saveChangeModel(@Valid AddModelDto addModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("addModel", addModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModel", bindingResult);
+            return "redirect:/model/change/{id}";
+        }
+        modelService.update(addModel);
         return "redirect:/admin/panel";
     }
 }

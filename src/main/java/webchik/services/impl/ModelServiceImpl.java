@@ -73,7 +73,7 @@ public class ModelServiceImpl  implements ModelService<UUID> {
     }
 
     @Override
-    public ShowModelInfoDto update(ShowModelInfoDto modelDto) {
+    public AddModelDto update(AddModelDto modelDto) {
         Optional<Model> dbModel = modelRepository.findById(modelDto.getId());
         if (dbModel.isEmpty()) {
             throw new NoSuchElementException("Model not found");
@@ -84,7 +84,7 @@ public class ModelServiceImpl  implements ModelService<UUID> {
             throw new NoSuchElementException("Brand not found");
         }
         model.setBrand(brandService.findBrandByName(modelDto.getBrandName()));
-            return modelMapper.map(modelRepository.saveAndFlush(model), ShowModelInfoDto.class);
+            return modelMapper.map(modelRepository.saveAndFlush(model), AddModelDto.class);
         }
 
     @Override

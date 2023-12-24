@@ -24,6 +24,6 @@ public interface ModelService <I extends UUID>{
 
     AddModelDto add(AddModelDto model);
 
-    ShowModelInfoDto update(ShowModelInfoDto modelDto);
+    AddModelDto update(AddModelDto modelDto);
     Model findByName(String name);
 }

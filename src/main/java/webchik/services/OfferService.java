@@ -20,7 +20,7 @@ public interface OfferService <I extends UUID>{
     Optional<ShowOfferInfoDto> findOffer(UUID id);
 
     AddOfferDto add(AddOfferDto offer);
-    ShowOfferInfoDto update(ShowOfferInfoDto offerDto);
+    AddOfferDto update(AddOfferDto offerDto);
 
     double averagePrice();
 

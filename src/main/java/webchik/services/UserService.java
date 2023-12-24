@@ -23,7 +23,7 @@ public interface UserService <I extends UUID>{
     Optional<ShowUserInfoDto> findUser(UUID id);
 
     AddUserDto add(AddUserDto user);
-    ShowUserInfoDto update(ShowUserInfoDto user);
+    AddUserDto update(AddUserDto user);
     User findByUsername (String username);
     void activation(UUID uuid);
 }

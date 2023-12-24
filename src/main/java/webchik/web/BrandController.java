@@ -5,21 +5,17 @@ import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import webchik.models.Brand;
 import webchik.services.BrandService;
-import webchik.services.dtos.AddBrandDto;
-import webchik.services.dtos.BrandDto;
-import webchik.services.dtos.ShowBrandInfoDto;
-import webchik.services.dtos.ShowUserInfoDto;
+import webchik.services.dtos.*;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,7 +23,13 @@ import java.util.UUID;
 @RequestMapping("/brand")
 public class BrandController {
     private BrandService brandService;
+    private final ModelMapper modelMapper;
     private static final Logger LOG = LogManager.getLogger(Controller.class);
+
+    public BrandController(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     @Autowired
     public void setBrandService(BrandService brandService) {
         this.brandService = brandService;
@@ -83,11 +85,16 @@ public class BrandController {
     @GetMapping("/change/{id}")
     public String changeBrand(Model model, @PathVariable("id") UUID uuid){
         Optional<ShowBrandInfoDto> dbBrand = brandService.findBrand(uuid);
-        dbBrand.ifPresent(brand -> model.addAttribute("brand", brand));
+        model.addAttribute("brandDto", modelMapper.map(dbBrand, AddBrandDto.class));
             return "addNewBrand2";
     }
     @PostMapping("/change/{id}")
-    public String saveChangeBrand(@PathVariable("id") UUID uuid, @ModelAttribute  ShowBrandInfoDto brandDto) {
+    public String saveChangeBrand(@Valid AddBrandDto brandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("brandDto", brandDto);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
+            return "redirect:/brand/change/{id}";
+        }
         brandService.update(brandDto);
         return "redirect:/admin/panel";
     }
