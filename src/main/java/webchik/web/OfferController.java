@@ -6,11 +6,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import webchik.models.User;
+import webchik.models.UserRole;
 import webchik.services.ModelService;
 import webchik.services.OfferService;
 import webchik.services.UserService;
@@ -27,6 +31,7 @@ public class OfferController {
     private UserService userService;
     private ModelService modelService;
     private final ModelMapper modelMapper;
+    private UserDetailsService userDetailsService;
     private static final Logger LOG = LogManager.getLogger(Controller.class);
 
     public OfferController(ModelMapper modelMapper) {
@@ -43,6 +48,10 @@ public class OfferController {
     @Autowired
     public void setModelService(ModelService modelService) {
         this.modelService = modelService;
+    }
+    @Autowired
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
     @GetMapping("/find/{id}")
     public String viewAllOffers2(Model model, @PathVariable("id") UUID uuid, Principal principal){
@@ -82,7 +91,9 @@ public class OfferController {
         }
         offerService.add(addOfferDto);
         LOG.info("Create new Offer ("+addOfferDto.getId()+") by "+principal.getName());
-        return "redirect:/admin/panel";
+        User user = modelMapper.map(userDetailsService.loadUserByUsername(principal.getName()), User.class);
+        boolean isAdmin = user.getUserRoles().stream().anyMatch(userRole -> userRole.getRole() == UserRole.Role.ADMIN);
+        return isAdmin ? "redirect:/admin/panel" : "redirect:/";
     }
     @GetMapping("/change/{id}")
     public String changeOffer(Model model, @PathVariable("id") UUID uuid){
