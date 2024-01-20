@@ -80,17 +80,17 @@ public class UserController {
         model.addAttribute("addUser", modelMapper.map(dbUser, ChangeUserDto.class));
         model.addAttribute("roles", userRoleService.getAll());
         return "changeUser";
-
     }
     @PostMapping("/change/{id}")
-    public String saveChangeUser(@Valid  ChangeUserDto addUser, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+    public String saveChangeUser(@Valid  ChangeUserDto changeUserDto, BindingResult bindingResult, Model model, Principal principal) {
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("addUser", addUser);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addUser", bindingResult);
-            return "redirect:/user/change/{id}";
+            model.addAttribute("roles", userRoleService.getAll());
+            model.addAttribute("addUser", changeUserDto);
+            model.addAttribute("org.springframework.validation.BindingResult.addUser", bindingResult);
+            return "changeUser";
         }
-        userService.update(addUser);
-        LOG.info("Change User ("+addUser.getUsername()+") by "+principal.getName());
+        userService.update(changeUserDto);
+        LOG.info("Change User ("+changeUserDto.getUsername()+") by "+principal.getName());
         return "redirect:/admin/panel";
     }
 }

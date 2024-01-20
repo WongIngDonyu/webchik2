@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,13 +53,13 @@ public class OfferController {
         this.userDetailsService = userDetailsService;
     }
     @GetMapping("/find/{id}")
-    public String viewAllOffers2(Model model, @PathVariable("id") UUID uuid, Principal principal){
+    public String viewMoreOffers(Model model, @PathVariable("id") UUID uuid, Principal principal){
         LOG.log(Level.INFO, "Show more information about Offer for " + principal.getName());
         Optional<ShowOfferInfoDto> offerOptional = offerService.findOffer(uuid);
         offerOptional.ifPresent(offer -> model.addAttribute("offer", offer));
         model.addAttribute("user", userService.findByUsername(offerOptional.get().getUsername()));
         model.addAttribute("model", modelService.findByName(offerOptional.get().getModelName()));
-        return "allOffers2";
+        return "moreOffers";
     }
 
     @PostMapping("/delete/{id}")
@@ -93,7 +92,12 @@ public class OfferController {
         LOG.info("Create new Offer ("+addOfferDto.getId()+") by "+principal.getName());
         User user = modelMapper.map(userDetailsService.loadUserByUsername(principal.getName()), User.class);
         boolean isAdmin = user.getUserRoles().stream().anyMatch(userRole -> userRole.getRole() == UserRole.Role.ADMIN);
-        return isAdmin ? "redirect:/admin/panel" : "redirect:/";
+        if(isAdmin){
+            return "redirect:/admin/panel";
+        }
+        else {
+            return "redirect:/";
+        }
     }
     @GetMapping("/change/{id}")
     public String changeOffer(Model model, @PathVariable("id") UUID uuid){
@@ -104,11 +108,13 @@ public class OfferController {
             return "changeOffer";
         }
     @PostMapping("/change/{id}")
-    public String saveChangeOffer(@Valid  AddOfferDto addOffer,BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+    public String saveChangeOffer(@Valid  AddOfferDto addOffer,BindingResult bindingResult, Model model, Principal principal) {
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("addOffer", addOffer);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOffer", bindingResult);
-            return "redirect:/offer/change/{id}";
+            model.addAttribute("allUsers", userService.allUsers());
+            model.addAttribute("allModels", modelService.allModels());
+            model.addAttribute("addOffer", addOffer);
+            model.addAttribute("org.springframework.validation.BindingResult.addOffer", bindingResult);
+            return "changeOffer";
         }
         offerService.update(addOffer);
         LOG.info("Change Offer ("+addOffer.getId()+") by "+principal.getName());

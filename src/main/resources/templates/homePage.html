@@ -24,7 +24,7 @@
                 </div>
                 <div>
                     <span th:text="'Average Price of Offers:'"></span>
-                    <span th:text="${averagePrice}"></span>
+                    <span th:text="${#numbers.formatDecimal(averagePrice, 2, 'POINT', 2, 'COMMA')}"></span>
                 </div>
                 </div>
                 <table class="table table-striped mt-5">
@@ -38,12 +38,11 @@
                     <tbody>
                     <tr th:each="offer : ${offers}">
                         <td>
-                            <img th:if="${offer.imageUrl != null}" th:src="${offer.imageUrl}" alt="Offer Image" style="max-width: 300px; max-height: 300px;">
-                            <img th:if="${offer.imageUrl == null}" th:src="@{/images/tesla.jpg}" alt="Default Offer Image" style="max-width: 300px; max-height: 300px;">
+                            <img th:if="${#strings.isEmpty(offer.imageUrl)}" th:src="@{/pic/tesla.png}" alt="Default Offer Image" style="max-width: 300px; max-height: 300px;">
+                            <img th:if="${!#strings.isEmpty(offer.imageUrl)}" th:src="${offer.imageUrl}" alt="Offer Image" style="max-width: 300px; max-height: 300px;">
                         </td>
                         <td th:text="${#strings.substring(offer.description,0,10)}"></td>
                         <td><a th:href="@{/offer/find/{id}(id=${offer.getId()})}">More</a></td>
-                        </td>
                     </tr>
                     </tbody>
                 </table>

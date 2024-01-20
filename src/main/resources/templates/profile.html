@@ -32,8 +32,8 @@
             </div>
           </div>
           <div class="col-md-6">
-            <img th:if="${user.imageUrl != null}" th:src="${user.imageUrl}" alt="User Image" style="max-width: 300px; max-height: 300px;">
-            <img th:if="${user.imageUrl == null}" th:src="@{/pic/employee.png}" alt="Default User Image" style="max-width: 300px; max-height: 300px;">
+            <img th:if="${#strings.isEmpty(user.imageUrl)}" th:src="@{/pic/employee.png}" alt="Default User Image" style="max-width: 300px; max-height: 300px;">
+            <img th:if="${!#strings.isEmpty(user.imageUrl)}" th:src="${user.imageUrl}" alt="User Image" style="max-width: 300px; max-height: 300px;">
           </div>
         </div>
       </main>

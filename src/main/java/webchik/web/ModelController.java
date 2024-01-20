@@ -76,14 +76,16 @@ public class ModelController {
     }
 
     @PostMapping("/change/{id}")
-    public String saveChangeModel(@Valid ChangeModelDto addModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
-        if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("addModel", addModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModel", bindingResult);
-            return "redirect:/model/change/{id}";
+    public String saveChangeModel(@Valid ChangeModelDto addModel, BindingResult bindingResult, Model model, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("allBrands", brandService.allBrands());
+            model.addAttribute("addModel", addModel);
+            model.addAttribute("org.springframework.validation.BindingResult.addModel", bindingResult);
+            return "changeModel";
         }
         modelService.update(addModel);
-        LOG.info("Change Model ("+addModel.getName()+") by "+principal.getName());
+        LOG.info("Change Model (" + addModel.getName() + ") by " + principal.getName());
         return "redirect:/admin/panel";
     }
+
 }

@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService<UUID> {
         User u = modelMapper.map(user, User.class);
         u.setCreated(LocalDateTime.now());
         u.setActive(true);
+        u.setPassword(passwordEncoder.encode(user.getPassword()));
         return modelMapper.map(userRepository.saveAndFlush(u), AddUserDto.class);
     }
 
@@ -101,6 +102,5 @@ public class UserServiceImpl implements UserService<UUID> {
             userRepository.saveAndFlush(user);
         }
     }
-
 }
 

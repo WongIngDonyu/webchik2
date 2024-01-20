@@ -71,17 +71,18 @@ public class BrandController {
     public String changeBrand(Model model, @PathVariable("id") UUID uuid){
         Optional<ShowBrandInfoDto> dbBrand = brandService.findBrand(uuid);
         model.addAttribute("brandDto", modelMapper.map(dbBrand, AddBrandDto.class));
-            return "changeBrand";
+        return "changeBrand";
     }
     @PostMapping("/change/{id}")
-    public String saveChangeBrand(@Valid AddBrandDto brandDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+    public String saveChangeBrand(@Valid AddBrandDto brandDto, BindingResult bindingResult, Model model, Principal principal) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("brandDto", brandDto);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addBrandDto", bindingResult);
-            return "redirect:/brand/change/{id}";
+            model.addAttribute("brandDto", brandDto);
+            model.addAttribute("org.springframework.validation.BindingResult.brandDto", bindingResult);
+            return "changeBrand";
         }
+
         brandService.update(brandDto);
-        LOG.info("Change  Brand ("+brandDto.getName()+") by "+principal.getName());
+        LOG.info("Change Brand (" + brandDto.getName() + ") by " + principal.getName());
         return "redirect:/admin/panel";
     }
 }
