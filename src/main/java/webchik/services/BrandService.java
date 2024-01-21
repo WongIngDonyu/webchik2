@@ -14,9 +14,7 @@ public interface BrandService <I extends UUID>{
 
     void delete(UUID id);
     List<ShowBrandInfoDto> allBrands();
-
     Optional<ShowBrandInfoDto> findBrand(UUID id);
-
     AddBrandDto add(AddBrandDto brand);
     AddBrandDto update(AddBrandDto brand);
     Brand findBrandByName(String brandName);

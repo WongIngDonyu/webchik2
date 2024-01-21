@@ -7,16 +7,10 @@ import java.util.UUID;
 
 public class ShowUserInfoDto {
     private String username;
-
-    private String password;
-
     private String firstName;
-
     private String lastName;
     private boolean isActive;
-
     private String imageUrl;
-
     private List<UserRole> userRoles;
     private UUID id;
 
@@ -28,13 +22,6 @@ public class ShowUserInfoDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getFirstName() {
         return firstName;

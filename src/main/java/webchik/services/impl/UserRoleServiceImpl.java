@@ -58,6 +58,4 @@ public class UserRoleServiceImpl implements UserRoleService<UUID> {
     public UserRole findRoleByName(UserRole.Role name) {
         return userRoleRepository.findByRole(name).orElse(null);
     }
-
-
 }

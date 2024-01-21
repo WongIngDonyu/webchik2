@@ -84,8 +84,7 @@ public class Model extends BaseEntity{
     }
     public enum Category {
         Car(0), Buss(1), Truck(2), Motorcycle(3);
-
-        int number;
+        private final int number;
         Category(int number) {
             this.number=number;
         }
@@ -94,3 +93,4 @@ public class Model extends BaseEntity{
         }
     }
 }
+

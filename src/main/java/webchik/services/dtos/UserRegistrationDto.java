@@ -6,15 +6,10 @@ import webchik.validation.UniqueUserName;
 public class UserRegistrationDto {
     @UniqueUserName
     private String username;
-
     private String password;
-
     private String firstName;
-
     private String lastName;
-
     private String imageUrl;
-
     public UserRegistrationDto() {}
 
     @NotEmpty(message = "Username must not be empty!")

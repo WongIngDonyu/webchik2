@@ -11,15 +11,10 @@ import java.util.UUID;
 
 public class ChangeUserDto {
     private String username;
-
     private String password;
-
     private String firstName;
-
     private String lastName;
-
     private String imageUrl;
-
     private List<UserRole> userRoles;
 
     private UUID id;

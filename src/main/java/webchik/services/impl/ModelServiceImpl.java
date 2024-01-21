@@ -20,66 +20,65 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
-@EnableCaching
+    @Service
+    @EnableCaching
+    public class ModelServiceImpl  implements ModelService<UUID> {
+        private final ModelMapper modelMapper;
+        private final ModelRepository modelRepository;
+        private final BrandRepository brandRepository;
+        private final BrandServiceImpl brandService;
 
-public class ModelServiceImpl  implements ModelService<UUID> {
-    private final ModelMapper modelMapper;
-    private final ModelRepository modelRepository;
-    private final BrandRepository brandRepository;
-    private final BrandServiceImpl brandService;
-
-    public ModelServiceImpl(ModelMapper modelMapper, ModelRepository modelRepository, BrandRepository brandRepository, BrandServiceImpl brandService) {
-        this.modelMapper = modelMapper;
-        this.modelRepository = modelRepository;
-        this.brandRepository = brandRepository;
-        this.brandService = brandService;
-    }
-    @Override
-    public void delete(UUID id) {
-        modelRepository.deleteById(id);
-    }
-
-    //@Cacheable("models")
-    @Override
-    public List<ShowModelInfoDto> allModels() {
-        return modelRepository.findAll().stream().map((m)->modelMapper.map(m, ShowModelInfoDto.class)).collect(Collectors.toList());
-
-    }
-
-    @Override
-    public Optional<ShowModelInfoDto> findModel(UUID id) {
-        return Optional.ofNullable(modelMapper.map(modelRepository.findById(id), ShowModelInfoDto.class));
-    }
-
-    @Override
-    public AddModelDto add(AddModelDto model) {
-        Model m = modelMapper.map(model, Model.class);
-        m.setBrand(brandService.findBrandByName(model.getBrandName()));
-        m.setCreated(LocalDateTime.now());
-        return modelMapper.map(modelRepository.saveAndFlush(m), AddModelDto.class);
-    }
-
-    @Override
-    public ChangeModelDto update(ChangeModelDto modelDto) {
-        Optional<Model> dbModel = modelRepository.findById(modelDto.getId());
-        if (dbModel.isEmpty()) {
-            throw new NoSuchElementException("Model not found");
+        public ModelServiceImpl(ModelMapper modelMapper, ModelRepository modelRepository, BrandRepository brandRepository, BrandServiceImpl brandService) {
+            this.modelMapper = modelMapper;
+            this.modelRepository = modelRepository;
+            this.brandRepository = brandRepository;
+            this.brandService = brandService;
         }
-        Model model = modelMapper.map(modelDto, Model.class);
-        Optional<Brand> dbBrand = brandRepository.findByName(modelDto.getBrandName());
-        if (dbBrand.isEmpty()){
-            throw new NoSuchElementException("Brand not found");
-        }
-        model.setBrand(brandService.findBrandByName(modelDto.getBrandName()));
-        model.setModified(LocalDateTime.now());
-        model.setCreated(dbModel.get().getCreated());
-            return modelMapper.map(modelRepository.saveAndFlush(model), ChangeModelDto.class);
+        @Override
+        public void delete(UUID id) {
+            modelRepository.deleteById(id);
         }
 
-    @Override
-    public Model findByName(String name) {
-        return modelRepository.findByName(name).orElse(null);
+        //@Cacheable("models")
+        @Override
+        public List<ShowModelInfoDto> allModels() {
+            return modelRepository.findAll().stream().map((m)->modelMapper.map(m, ShowModelInfoDto.class)).collect(Collectors.toList());
+
+        }
+
+        @Override
+        public Optional<ShowModelInfoDto> findModel(UUID id) {
+            return Optional.ofNullable(modelMapper.map(modelRepository.findById(id), ShowModelInfoDto.class));
+        }
+
+        @Override
+        public AddModelDto add(AddModelDto model) {
+            Model m = modelMapper.map(model, Model.class);
+            m.setBrand(brandService.findBrandByName(model.getBrandName()));
+            m.setCreated(LocalDateTime.now());
+            return modelMapper.map(modelRepository.saveAndFlush(m), AddModelDto.class);
+        }
+
+        @Override
+        public ChangeModelDto update(ChangeModelDto modelDto) {
+            Optional<Model> dbModel = modelRepository.findById(modelDto.getId());
+            if (dbModel.isEmpty()) {
+                throw new NoSuchElementException("Model not found");
+            }
+            Model model = modelMapper.map(modelDto, Model.class);
+            Optional<Brand> dbBrand = brandRepository.findByName(modelDto.getBrandName());
+            if (dbBrand.isEmpty()){
+                throw new NoSuchElementException("Brand not found");
+            }
+            model.setBrand(brandService.findBrandByName(modelDto.getBrandName()));
+            model.setModified(LocalDateTime.now());
+            model.setCreated(dbModel.get().getCreated());
+                return modelMapper.map(modelRepository.saveAndFlush(model), ChangeModelDto.class);
+            }
+
+        @Override
+        public Model findByName(String name) {
+            return modelRepository.findByName(name).orElse(null);
+        }
     }
-}
 

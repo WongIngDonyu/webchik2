@@ -74,13 +74,15 @@ public class BrandController {
         return "changeBrand";
     }
     @PostMapping("/change/{id}")
-    public String saveChangeBrand(@Valid AddBrandDto brandDto, BindingResult bindingResult, Model model, Principal principal) {
+    public String saveChangeBrand(@Valid AddBrandDto brandDto,
+                                  BindingResult bindingResult,
+                                  Model model,
+                                  Principal principal) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("brandDto", brandDto);
             model.addAttribute("org.springframework.validation.BindingResult.brandDto", bindingResult);
             return "changeBrand";
         }
-
         brandService.update(brandDto);
         LOG.info("Change Brand (" + brandDto.getName() + ") by " + principal.getName());
         return "redirect:/admin/panel";

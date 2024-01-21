@@ -113,7 +113,7 @@ public class Offer extends BaseEntity{
     }
     public enum Transmission {
         Manual(0), Automatic(1);
-        private int number;
+        private final int number;
         Transmission(int number) {
             this.number=number;
         }

@@ -16,9 +16,7 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
-
     private OfferService offerService;
-    private static final Logger LOG = LogManager.getLogger(Controller.class);
     @Autowired
     public void setOfferService(OfferService offerService) {
         this.offerService = offerService;

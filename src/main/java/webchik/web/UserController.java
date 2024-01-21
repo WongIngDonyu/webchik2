@@ -20,7 +20,6 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
     private UserService userService;
     private UserRoleService userRoleService;
     private final ModelMapper modelMapper;

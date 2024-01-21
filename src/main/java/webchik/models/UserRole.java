@@ -9,9 +9,7 @@ import java.util.UUID;
 @Table(name = "roles")
 public class UserRole extends BasedEnity{
     private Role role;
-
     public UserRole(){}
-
     public UserRole(UUID id, Role role) {
         this.id = id;
         this.role = role;
@@ -20,16 +18,12 @@ public class UserRole extends BasedEnity{
     public Role getRole() {
         return role;
     }
-
     public void setRole(Role role) {
         this.role = role;
     }
-
-
-
     public enum Role {
         USER(0), ADMIN(1);
-        private int number;
+        private final int number;
         Role(int number) {
             this.number=number;
         }

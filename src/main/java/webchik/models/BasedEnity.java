@@ -9,7 +9,7 @@ public abstract class BasedEnity {
     protected UUID id;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = true)
+    @Column(name = "id", nullable = false)
     public UUID getId() {
         return id;
     }
@@ -18,3 +18,5 @@ public abstract class BasedEnity {
         this.id = id;
     }
 }
+
+

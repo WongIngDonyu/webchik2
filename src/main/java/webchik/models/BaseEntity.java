@@ -26,3 +26,4 @@ public abstract class BaseEntity extends BasedEnity{
         this.modified = modified;
     }
 }
+

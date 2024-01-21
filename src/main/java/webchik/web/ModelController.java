@@ -57,7 +57,10 @@ public class ModelController {
     }
 
     @PostMapping("/create")
-    public String addNewModel(@Valid AddModelDto addModelDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
+    public String addNewModel(@Valid AddModelDto addModelDto,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes,
+                              Principal principal){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("addModelDto", addModelDto);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModelDto", bindingResult);
@@ -87,5 +90,4 @@ public class ModelController {
         LOG.info("Change Model (" + addModel.getName() + ") by " + principal.getName());
         return "redirect:/admin/panel";
     }
-
 }

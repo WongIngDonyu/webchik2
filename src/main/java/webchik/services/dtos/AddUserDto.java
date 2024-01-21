@@ -12,15 +12,10 @@ import java.util.UUID;
 public class AddUserDto {
     @UniqueUserName
     private String username;
-
     private String password;
-
     private String firstName;
-
     private String lastName;
-
     private String imageUrl;
-
     private List<UserRole> userRoles;
 
     private UUID id;

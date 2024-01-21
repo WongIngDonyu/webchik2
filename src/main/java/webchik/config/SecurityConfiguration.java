@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                                         requestMatchers("/", "/users/login", "/users/register", "/users/login-error")
                                         .permitAll().
                                         requestMatchers("/users/profile", "/offer/find/{id}", "offer/create").authenticated().
-                                        requestMatchers("/admin/panel", "/brand/**", "/model/**", "/user/**", "/brand/**", "/offer/change/{id}", "/offer/delete/{id}").hasRole(UserRole.Role.ADMIN.name()).
+                                        requestMatchers("/admin/panel", "/brand/**", "/model/**", "/user/**", "/brand/**",
+                                                "/offer/change/{id}", "/offer/delete/{id}").hasRole(UserRole.Role.ADMIN.name()).
                                         anyRequest().authenticated()
                 )
                 .formLogin(

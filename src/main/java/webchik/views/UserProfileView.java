@@ -6,9 +6,7 @@ import java.util.List;
 
 public class UserProfileView {
     private String username;
-
     private String firstName;
-
     private String lastName;
     private List<Offer> offers;
     private String imageUrl;

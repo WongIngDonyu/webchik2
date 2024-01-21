@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Service
 @EnableCaching
-
 public class OfferServiceImpl implements OfferService<UUID> {
     private final OfferRepository offerRepository;
     private final ModelMapper modelMapper;
@@ -90,7 +89,6 @@ public class OfferServiceImpl implements OfferService<UUID> {
             offer.setModified(LocalDateTime.now());
             offer.setCreated(dbOffer.get().getCreated());
             return modelMapper.map(offerRepository.saveAndFlush(offer), AddOfferDto.class);
-
     }
 
     @Override

@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 @Service
 @EnableCaching
-
 public class UserServiceImpl implements UserService<UUID> {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -87,12 +86,10 @@ public class UserServiceImpl implements UserService<UUID> {
             user1.setCreated(dbUser.get().getCreated());
             return modelMapper.map(userRepository.saveAndFlush(user1), ChangeUserDto.class);
         }
-
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
-
     @Override
     public void activation(UUID uuid) {
         Optional<User> optionalUser = userRepository.findById(uuid);
